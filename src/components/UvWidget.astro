@@ -1,0 +1,194 @@
+---
+const { heading = 'Do I need sunscreen today?', id = 'uv', compact = false } = Astro.props;
+---
+<section class={"uvw" + (compact ? " compact" : "")} id={id} aria-label="UV index and sunscreen check">
+  <div class="uvw-head">
+    <div>
+      <div class="up uvw-k">UV check</div>
+      <h2 class="hd uvw-h">{heading}</h2>
+    </div>
+    <div class="hand uvw-hand">look up before you step out</div>
+  </div>
+
+  <div class="uvw-ctl">
+    <button type="button" class="uvw-btn uvw-geo">Use my location</button>
+    <form class="uvw-form" autocomplete="off">
+      <input class="uvw-q" type="text" placeholder="or type a city" aria-label="City" />
+      <button type="submit" class="uvw-btn uvw-btn2">Check</button>
+    </form>
+  </div>
+  <ul class="uvw-list" hidden></ul>
+
+  <div class="uvw-body" aria-live="polite">
+    <div class="uvw-empty">Share your location or type a city and I will show the UV index right now, the peak for today and the hours when sunscreen matters.</div>
+  </div>
+
+  <p class="uvw-fine">UV data from <a href="https://open-meteo.com/" rel="noopener" target="_blank">Open-Meteo</a>. Your location is used only in your browser to ask for the forecast and is not stored on my server. General guidance, not medical advice.</p>
+</section>
+
+<script is:inline>
+(function(){
+  function init(root){
+  var $=function(c){return root.querySelector('.'+c)};
+  var body=$('uvw-body'), list=$('uvw-list'), qIn=$('uvw-q');
+  var LV=[
+    {max:2.99,name:'Low',c:'#BDBDBD',t:'#111',head:'No sunscreen needed for a short time outside.',more:'If you will be out for hours, on snow or water, or your skin is very sensitive, wear it anyway.'},
+    {max:5.99,name:'Moderate',c:'#E8A5B5',t:'#111',head:'Yes, wear sunscreen today.',more:'SPF 30 or higher on any skin that will be outside. Sunglasses help too.'},
+    {max:7.99,name:'High',c:'#C2517A',t:'#fff',head:'Yes, sunscreen on, and reapply.',more:'SPF 50 is a good pick. Reapply every 2 hours outside and look for shade around midday.'},
+    {max:10.99,name:'Very high',c:'#8E2D55',t:'#fff',head:'Sunscreen on, and be careful at midday.',more:'SPF 50+, reapply every 2 hours, a hat and sunglasses, and shade between late morning and mid-afternoon.'},
+    {max:99,name:'Extreme',c:'#4F1230',t:'#fff',head:'Full protection today.',more:'SPF 50+, reapply often, cover up and avoid the sun around midday if you can.'}
+  ];
+  function lvl(v){for(var i=0;i<LV.length;i++){if(v<=LV[i].max)return LV[i]}return LV[4]}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function msg(t){body.innerHTML='<div class="uvw-empty">'+esc(t)+'</div>'}
+  function save(o){try{localStorage.setItem('uvw-loc',JSON.stringify(o))}catch(e){}}
+  function load(){try{return JSON.parse(localStorage.getItem('uvw-loc')||'null')}catch(e){return null}}
+  function fmtH(h){return (h<10?'0':'')+h+':00'}
+
+  function render(d,label){
+    var h=d.hourly, t=h.time, u=h.uv_index.map(function(x){return x==null?0:x});
+    var off=d.utc_offset_seconds||0;
+    var nowLocal=new Date(Date.now()+off*1000);
+    var today=nowLocal.toISOString().slice(0,10);
+    var hr=nowLocal.getUTCHours();
+    var idx=[];for(var i=0;i<t.length;i++){if(t[i].slice(0,10)===today)idx.push(i)}
+    if(!idx.length){idx=t.map(function(_,i){return i}).slice(0,24)}
+    var day=idx.map(function(i){return {h:+t[i].slice(11,13),v:u[i]}});
+    var cur=day.filter(function(x){return x.h===hr})[0];
+    var now=(d.current&&d.current.uv_index!=null)?d.current.uv_index:(cur?cur.v:0);
+    var max=0,maxH=0;day.forEach(function(x){if(x.v>max){max=x.v;maxH=x.h}});
+    var w=day.filter(function(x){return x.v>=3});
+    var win=w.length?(fmtH(w[0].h)+' to '+fmtH(w[w.length-1].h+1)):null;
+    var sunUp=(d.current&&d.current.is_day!=null)?d.current.is_day===1:(now>0);
+    var L=lvl(now), Lm=lvl(max);
+    var head,more;
+    if(!sunUp&&now<0.5){
+      head='The sun is down, no sunscreen needed right now.';
+      more=max>=3?('Today’s peak was UV '+max.toFixed(1)+' around '+fmtH(maxH)+'. Check again in the morning.'):'UV stayed low today. Check again in the morning.';
+    } else {head=L.head;more=L.more}
+    var bars=day.map(function(x){
+      var l=lvl(x.v),hh=Math.max(4,Math.round(Math.min(x.v,12)/12*100));
+      return '<div class="uvw-bar'+(x.h===hr?' now':'')+'" title="'+fmtH(x.h)+' UV '+x.v.toFixed(1)+'"><i style="height:'+hh+'%;background:'+l.c+'"></i><span>'+(x.h%3===0?x.h:'')+'</span></div>';
+    }).join('');
+    body.innerHTML=
+      '<div class="uvw-loc">'+esc(label)+'</div>'+
+      '<div class="uvw-grid">'+
+        '<div class="uvw-now" style="background:'+L.c+';color:'+L.t+'"><div class="uvw-lab">UV index now</div><div class="uvw-num">'+now.toFixed(1)+'</div><div class="uvw-lvl">'+L.name+'</div></div>'+
+        '<div class="uvw-info"><div class="uvw-verdict">'+esc(head)+'</div><p>'+esc(more)+'</p>'+
+          '<ul class="uvw-facts"><li><b>Peak today</b> UV '+max.toFixed(1)+' ('+Lm.name.toLowerCase()+') around '+fmtH(maxH)+'</li>'+
+          '<li><b>Sunscreen window</b> '+(win?esc(win):'UV stays under 3 all day')+'</li></ul></div>'+
+      '</div>'+
+      '<div class="uvw-chart" role="img" aria-label="UV index by hour today">'+bars+'</div>'+
+      '<div class="uvw-note">UV depends on the sun, not the temperature. It can be high on a cool or cloudy day, so check the number, not the weather.</div>';
+    try{window.dispatchEvent(new CustomEvent('uvw:update',{detail:{now:now,color:L.c,text:L.t,name:L.name,sunUp:sunUp}}))}catch(e){}
+  }
+
+  function forecast(lat,lon,label){
+    msg('Checking the UV index…');
+    var url='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=uv_index,is_day&hourly=uv_index&timezone=auto&forecast_days=2';
+    window.__uvc=window.__uvc||{};
+    var pr=window.__uvc[url]||(window.__uvc[url]=fetch(url).then(function(r){if(!r.ok)throw 0;return r.json()}));
+    pr.then(function(d){
+      if(!d.hourly||!d.hourly.uv_index)throw 0;
+      render(d,label);save({lat:lat,lon:lon,label:label});
+    }).catch(function(){delete window.__uvc[url];msg('I could not load the UV forecast. Please try again in a moment.')});
+  }
+  function r2(n){return Math.round(n*100)/100}
+
+  $('uvw-geo').addEventListener('click',function(){
+    list.hidden=true;
+    if(!navigator.geolocation){msg('Your browser cannot share its location. Please type your city instead.');return}
+    msg('Waiting for your location…');
+    navigator.geolocation.getCurrentPosition(function(p){
+      forecast(r2(p.coords.latitude),r2(p.coords.longitude),'Your location');
+    },function(){msg('Location is off. Please type your city instead.')},{timeout:12000,maximumAge:600000});
+  });
+
+  $('uvw-form').addEventListener('submit',function(e){
+    e.preventDefault();var q=qIn.value.trim();if(!q)return;
+    msg('Searching…');list.hidden=true;
+    fetch('https://geocoding-api.open-meteo.com/v1/search?name='+encodeURIComponent(q)+'&count=5&language=en&format=json')
+    .then(function(r){return r.json()}).then(function(d){
+      var rs=d.results||[];
+      if(!rs.length){msg('I could not find that place. Try the city name only.');return}
+      function lab(x){return [x.name,x.admin1,x.country].filter(Boolean).join(', ')}
+      if(rs.length===1){forecast(r2(rs[0].latitude),r2(rs[0].longitude),lab(rs[0]));return}
+      msg('Which one do you mean?');
+      list.innerHTML='';
+      rs.forEach(function(x){
+        var li=document.createElement('li'),b=document.createElement('button');
+        b.type='button';b.textContent=lab(x);
+        b.addEventListener('click',function(){list.hidden=true;forecast(r2(x.latitude),r2(x.longitude),lab(x))});
+        li.appendChild(b);list.appendChild(li);
+      });
+      list.hidden=false;
+    }).catch(function(){msg('I could not search right now. Please try again.')});
+  });
+
+  var s=load();
+  if(s&&typeof s.lat==='number'&&typeof s.lon==='number'){forecast(s.lat,s.lon,s.label||'Your location')}
+  }
+  [].forEach.call(document.querySelectorAll('.uvw'),init);
+})();
+</script>
+
+<style is:global>
+.s .uvw{background:#F5F5F5;border-radius:18px;padding:36px;font-family:'Inter Tight',sans-serif;color:#4A4A4A}
+.s .uvw *{font-family:'Inter Tight',sans-serif}
+.s .uvw .hand{font-family:'Reenie Beanie',cursive}
+.s .uvw-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.s .uvw-k{color:#8A8A8A}
+.s .uvw-h{margin:8px 0 0;font-size:54px;line-height:1}
+.s .uvw-hand{font-size:34px;transform:rotate(-2deg);color:#C2517A;line-height:1}
+.s .uvw-ctl{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px;align-items:center}
+.s .uvw-form{display:flex;gap:8px;flex:1;min-width:240px;max-width:460px}
+.s .uvw-form input{flex:1;min-width:0;border:1.5px solid #111;border-radius:999px;padding:11px 18px;font-size:15px;background:#fff;color:#111}
+.s .uvw-btn{border:1.5px solid #111;background:#111;color:#fff;border-radius:999px;padding:11px 22px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.s .uvw-btn:hover{background:#333}
+.s .uvw-btn2{background:#fff;color:#111}
+.s .uvw-btn2:hover{background:#EDEDED}
+.s .uvw-list{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;max-width:460px}
+.s .uvw-list[hidden]{display:none}
+.s .uvw-list button{width:100%;text-align:left;border:1px solid #D4D4D4;background:#fff;border-radius:10px;padding:10px 14px;font-size:14px;cursor:pointer;color:#111}
+.s .uvw-list button:hover{background:#EDEDED}
+.s .uvw-body{margin-top:26px}
+.s .uvw-empty{background:#EDEDED;border-radius:14px;padding:26px;font-size:16px;line-height:1.5;color:#6B6B6B}
+.s .uvw-loc{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#8A8A8A;margin-bottom:12px}
+.s .uvw-grid{display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:24px;align-items:stretch}
+.s .uvw-now{border-radius:16px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;min-height:220px}
+.s .uvw-lab{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.s .uvw-num{font-weight:700;font-size:96px;line-height:1}
+.s .uvw-lvl{font-weight:600;font-size:22px}
+.s .uvw-info{background:#EDEDED;border-radius:16px;padding:24px}
+.s .uvw-verdict{font-weight:700;font-size:28px;line-height:1.15;color:#111;margin-bottom:10px}
+.s .uvw-info p{margin:0 0 14px;font-size:16px;line-height:1.5;color:#4A4A4A;font-family:'Newsreader',serif}
+.s .uvw-facts{list-style:none;margin:0;padding:0;border-top:1px solid #D4D4D4}
+.s .uvw-facts li{padding:10px 0;border-bottom:1px solid #D4D4D4;font-size:14px;color:#4A4A4A}
+.s .uvw-facts li:last-child{border-bottom:0}
+.s .uvw-facts b{display:inline-block;min-width:150px;color:#111;font-weight:600}
+.s .uvw-chart{display:flex;gap:3px;align-items:flex-end;height:150px;margin-top:20px;padding:16px 16px 0;background:#EDEDED;border-radius:16px}
+.s .uvw-bar{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;position:relative}
+.s .uvw-bar i{display:block;width:100%;border-radius:4px 4px 0 0;min-height:3px}
+.s .uvw-bar span{font-size:10px;color:#8A8A8A;height:18px;line-height:18px}
+.s .uvw-bar.now i{outline:2px solid #111;outline-offset:1px}
+.s .uvw-note{margin-top:14px;font-size:13px;color:#6B6B6B;line-height:1.5}
+.s .uvw-fine{margin:18px 0 0;font-size:12px;color:#8A8A8A;line-height:1.5}
+.s .uvw-fine a{text-decoration:underline;color:inherit}
+/* compact (floating panel) */
+.s .uvw.compact{padding:18px 16px 14px;border-radius:16px}
+.s .uvw.compact .uvw-h{font-size:26px}
+.s .uvw.compact .uvw-hand{display:none}
+.s .uvw.compact .uvw-ctl{margin-top:14px;gap:8px}
+.s .uvw.compact .uvw-form{min-width:0;flex-basis:100%;max-width:none}
+.s .uvw.compact .uvw-body{margin-top:16px}
+.s .uvw.compact .uvw-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+.s .uvw.compact .uvw-now{min-height:0;padding:16px;gap:6px}
+.s .uvw.compact .uvw-num{font-size:60px}
+.s .uvw.compact .uvw-verdict{font-size:20px}
+.s .uvw.compact .uvw-info{padding:16px}
+.s .uvw.compact .uvw-info p{font-size:15px}
+.s .uvw.compact .uvw-facts b{display:block;min-width:0}
+.s .uvw.compact .uvw-chart{height:110px;margin-top:12px;padding:12px 10px 0}
+.s .uvw.compact .uvw-note{display:none}
+@media(max-width:760px){.s .uvw{padding:22px 16px}.s .uvw-h{font-size:36px}.s .uvw-grid{grid-template-columns:minmax(0,1fr)}.s .uvw-now{min-height:0;gap:8px}.s .uvw-num{font-size:72px}.s .uvw-verdict{font-size:23px}.s .uvw-facts b{display:block;min-width:0}.s .uvw-form{max-width:none}}
+</style>

@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import UvWidget from '../components/UvWidget.astro';
+import MonthFavs from '../components/MonthFavs.astro';
+import SkinFeels from '../components/SkinFeels.astro';
+import HomeIntro from '../components/HomeIntro.astro';
+import SkinQuiz from '../components/SkinQuiz.astro';
+---
+<Base title="Sundays with Anna | Honest beauty and skincare reviews">
+
+<section class="p" style="padding-top:16px"><div style="position:relative;height:680px" class="img"><img src="/img/rollers.webp" alt="Anna in hair rollers" style="object-position:50% 40%">
+<h1 class="hd" style="position:absolute;left:24px;top:22px;margin:0;color:#fff;font-size:64px;max-width:760px;text-shadow:0 1px 30px rgba(0,0,0,.25)">Real skin. Real routines. Real glow.</h1>
+<div class="hand" style="position:absolute;right:34px;bottom:34px;color:#B0475E;font-size:38px;transform:rotate(-3deg)">my Sunday secrets &lt;3</div></div></section>
+
+<section class="p sec" style="padding-top:72px"><UvWidget /><div style="margin-top:16px"><a class="up arrow" href="/uv/">More about the UV index</a></div></section>
+
+<HomeIntro />
+
+<MonthFavs />
+
+<section class="p sec"><SkinQuiz /></section>
+
+<section class="p sec"><div style="display:flex;justify-content:space-between;align-items:center"><h2 class="hd" style="margin:0;font-size:54px">Skin guide</h2><a class="up arrow" href="/skin-guide/">Open the guide</a></div><div class="hand" style="margin:6px 0 24px;transform:rotate(-1deg)">pick what your skin feels like today</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px">
+<a href="/skin-guide/barrier-repair/" style="background:#F5F5F5;padding:28px;min-height:190px;display:flex;flex-direction:column;justify-content:space-between"><div class="up" style="color:#8A8A8A">01</div><div><div class="hd" style="font-size:30px">Dry and tight</div><div style="margin-top:8px;color:#5C5C5C">Rebuild a tight, dry barrier first: gentle cleanser, hydrating serum, ceramide cream.</div></div></a>
+<a href="/skin-guide/acne-and-pores/" style="background:#F5F5F5;padding:28px;min-height:190px;display:flex;flex-direction:column;justify-content:space-between"><div class="up" style="color:#8A8A8A">02</div><div><div class="hd" style="font-size:30px">Visible pores</div><div style="margin-top:8px;color:#5C5C5C">Start with a gentle exfoliating acid a few nights a week and keep the rest simple.</div></div></a>
+<a href="/skin-guide/even-skin-tone/" style="background:#F5F5F5;padding:28px;min-height:190px;display:flex;flex-direction:column;justify-content:space-between"><div class="up" style="color:#8A8A8A">03</div><div><div class="hd" style="font-size:30px">Dark spots</div><div style="margin-top:8px;color:#5C5C5C">Sunscreen every day, then add one brightening active slowly.</div></div></a></div></section>
+
+<SkinFeels />
+
+<section class="p sec"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px"><h2 class="hd" style="margin:0;font-size:54px">Latest reviews</h2><a class="up arrow" href="/beauty/">See all</a></div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px">
+<a href="/beauty/medicube-zero-pore-pad-review/"><div class="img" style="height:480px"><img src="/img/sink.webp" alt="Medicube pads" style="object-position:50% 100%"></div><div class="up" style="margin-top:14px;font-size:14px">Medicube Zero Pore Pad 2.0, three years in</div><div style="color:#8A8A8A">Review · 8 min read</div></a>
+<a href="/beauty/morning-skincare-routine-dry-skin-winter/"><div class="img" style="height:480px"><img src="/img/bshelf.webp" alt="Shelf"></div><div class="up" style="margin-top:14px;font-size:14px">My morning routine for dry skin in winter</div><div style="color:#8A8A8A">Routine · 7 min read</div></a>
+<a href="/notes/gut-health-checklist/"><div class="ph" style="height:480px"><span>Image<br><em>Gut health checklist cover</em></span></div><div class="up" style="margin-top:14px;font-size:14px">Gut health checklist: my daily habits for glowing skin</div><div style="color:#8A8A8A">Note · 9 min read</div></a></div></section>
+
+<section class="p sec"><div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px"><div style="background:#EDEDED;padding:44px;display:flex;flex-direction:column;justify-content:space-between;min-height:460px"><h2 class="hd" style="margin:0;font-size:54px">Shop my picks</h2><div><p style="margin:0 0 20px;max-width:360px">Clothes, bags and beauty finds I kept, each with a plain note on quality and fit.</p><a class="pill" href="/shop/">Open the shop</a></div></div>
+<a class="img" href="/shop/" style="min-height:460px"><img src="/img/bag.webp" alt="Shopping day" style="object-position:50% 40%"></a></div></section>
+
+
+</Base>

@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import { goals, activeBySlug } from '../../data/guide';
+export function getStaticPaths(){ return goals.map(g=>({params:{goal:g.slug},props:{g}})); }
+const { g } = Astro.props;
+const dots=(s:string)=>s.startsWith('Medium to')?1:s.startsWith('Medium')?2:s.startsWith('Low to')?4:5;
+const word=(s:string)=>s.startsWith('Medium to')?'go slowly':s.startsWith('Medium')?'fairly gentle':s.startsWith('Low to')?'quite gentle':'very gentle';
+const first=g.shelf[0];
+const rot=['-2deg','2deg','-1.5deg'];
+---
+<Base title={`${g.name} skin guide: routine and key ingredients | Sundays with Anna`} description={g.summary}>
+<section class="p" style="padding-top:28px"><div class="g-crumb"><a href="/skin-guide/">Skin guide</a><span>/</span><b>{g.name}</b></div>
+<div class="g-hero"><div><div class="up" style="color:#8A8A8A">My playbook</div><h1 class="hd g-h1s" style="margin-top:8px">{g.name}</h1><p class="serif g-lead" style="margin-top:18px">{g.summary}</p><div class="hand" style="transform:rotate(-2deg);font-size:36px;margin-top:6px">{g.hand}</div></div>
+<a href={first.href} class="pol" style="transform:rotate(2deg);max-width:340px;justify-self:center"><div class="tp"></div><div class="ph" style="height:340px"><img src={`/img/${first.img}`} alt={first.name} style={`object-position:${first.pos||'50% 50%'}`}></div><div class="cap">{first.name}</div></a></div>
+<div class="g-two"><div class="g-box"><div class="g-lab">Sound like you?</div><ul class="g-lst">{g.forYou.map(x=>(<li>{x}</li>))}</ul></div>
+<div class="g-box" style="background:#EDEDED"><div class="g-lab">What I wish I knew sooner</div><ul class="g-lst">{g.keep.map(x=>(<li>{x}</li>))}</ul></div></div></section>
+
+<section class="p sec" style="padding-top:72px"><h2 class="hd g-h2">My routine, step by step</h2><p class="serif g-sub">Morning and night. Skip the steps marked as optional if you want to keep it simple.</p>
+<div class="g-rt">
+<div><h3 class="hd">Morning</h3><span class="hand">fast and light</span>{g.am.map((s,i)=>(<div class="g-row"><div class="g-rn">{i+1}</div><div><div class="g-rowt">{s.name}{s.optional&&<i class="g-skip">optional</i>}</div><div class="g-rowd">{s.desc}</div><div class="g-rowf">{s.freq}</div></div></div>))}</div>
+<div><h3 class="hd">Night</h3><span class="hand">slow and caring</span>{g.pm.map((s,i)=>(<div class="g-row"><div class="g-rn">{i+1}</div><div><div class="g-rowt">{s.name}{s.optional&&<i class="g-skip">optional</i>}</div><div class="g-rowd">{s.desc}</div><div class="g-rowf">{s.freq}</div></div></div>))}</div></div></section>
+
+<section class="p sec"><h2 class="hd g-h2">The ingredients I'd start with</h2><p class="serif g-sub">You don't need all of them. Pick one or two and give them time.</p>
+<div class="g-cards">{g.actives.map(s=>{const a=activeBySlug[s];return (<a class="g-card" href={`/skin-guide/actives/${a.slug}/`}><b>{a.name}</b><div class="g-also">Also called: {a.includes.join(', ').toLowerCase()}</div><p>{a.summary}</p><div class="g-tags">{a.tags.join(' / ')}</div><div class="g-meta">Works at: {a.range}</div><div class="g-gentle"><span class="g-dots">{[1,2,3,4,5].map(n=>(<i class={n<=dots(a.irritation)?'on':''}></i>))}</span>{word(a.irritation)}</div><em class="g-more">Read more</em></a>)})}</div></section>
+
+<section class="p sec"><div class="up" style="color:#8A8A8A;margin-bottom:12px">From my bathroom shelf</div><h2 class="hd g-h2">What's on my shelf for this</h2>
+<div class="g-shelf">{g.shelf.map((p,i)=>(<a class="pol" href={p.href} style={`transform:rotate(${rot[i%3]})`}><div class="tp"></div><div class="ph" style="height:320px"><img src={`/img/${p.img}`} alt={p.name} style={`object-position:${p.pos||'50% 50%'}`}></div><div class="cap">{p.name}</div></a>))}</div>
+<div class="g-shelf" style="margin-top:6px">{g.shelf.map(p=>(<p class="serif" style="margin:0;font-size:18px;color:#4A4A4A">{p.note}</p>))}</div></section>
+
+<section class="p sec"><h2 class="hd g-h2">Keep reading</h2><div class="g-links">{g.readNext.map(r=>(<a href={r.href}>{r.title}<span>→</span></a>))}<a href="/skin-guide/">All skin goals<span>→</span></a></div>
+<p class="g-disc">This is general information from my own experience and reading, not medical advice. If your skin is painful, very irritated or not improving, please see a dermatologist.</p></section>
+</Base>

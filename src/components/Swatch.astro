@@ -1,0 +1,34 @@
+---
+const { c1='#F3EBDD', c2='#E3D3BB', type='cream', seed=3, id='x', height=220 } = Astro.props;
+const gel = type==='gel', oil = type==='oil';
+const op = gel ? .72 : oil ? .6 : 1;
+const spec = gel ? 1.1 : oil ? 1.3 : .55;
+const sx = gel ? 26 : 14;
+const f=`f${id}`, g=`g${id}`, sh=`s${id}`;
+---
+<svg viewBox="0 0 600 260" class="swatch" style={`height:${height}px`} role="img" aria-label="Texture swatch">
+<defs>
+<linearGradient id={g} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color={c2}/><stop offset=".45" stop-color={c1}/><stop offset="1" stop-color={c1}/></linearGradient>
+<filter id={sh} x="-10%" y="-30%" width="120%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+<filter id={f} x="-5%" y="-25%" width="110%" height="150%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.022 0.05" numOctaves="3" seed={seed} result="n1"/>
+<feDisplacementMap in="SourceGraphic" in2="n1" scale={sx} xChannelSelector="R" yChannelSelector="G" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.004 0.07" numOctaves="3" seed={seed+7} result="n2"/>
+<feColorMatrix in="n2" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.2 -.1" result="h0"/><feGaussianBlur in="h0" stdDeviation="2 0.7" result="h"/>
+<feDiffuseLighting in="h" surfaceScale="2.2" diffuseConstant="1" lighting-color="#fff" result="diff0"><feDistantLight azimuth="235" elevation="50"/></feDiffuseLighting><feComponentTransfer in="diff0" result="diff"><feFuncR type="linear" slope=".9" intercept=".28"/><feFuncG type="linear" slope=".9" intercept=".28"/><feFuncB type="linear" slope=".9" intercept=".28"/></feComponentTransfer>
+<feSpecularLighting in="h" surfaceScale="2.2" specularConstant={spec} specularExponent="26" lighting-color="#fff" result="sp"><feDistantLight azimuth="235" elevation="50"/></feSpecularLighting>
+<feComposite in="diff" in2="shape" operator="in" result="d1"/>
+<feBlend in="shape" in2="d1" mode="multiply" result="lit"/>
+<feComposite in="sp" in2="shape" operator="in" result="s1"/>
+<feBlend in="s1" in2="lit" mode="screen" result="out"/>
+<feComposite in="out" in2="shape" operator="in"/>
+</filter>
+</defs>
+<g filter={`url(#${sh})`} opacity=".28" transform="translate(0 10)"><path d="M70 120 C110 78 190 70 290 92 C380 108 470 104 560 120 L560 142 C470 150 380 148 290 160 C190 180 110 190 70 160Z" fill="#3a2f25"/></g>
+<g filter={`url(#${f})`} opacity={op}>
+<path d="M62 128 C70 84 150 66 250 84 C340 100 440 96 560 112 L566 126 C470 134 380 140 296 150 C200 170 120 196 76 166 C62 156 58 142 62 128Z" fill={`url(#${g})`}/>
+<path d="M300 112 L580 108 L584 114 L300 126Z" fill={c1}/>
+<path d="M280 138 L540 132 L548 138 L280 150Z" fill={c1}/>
+<path d="M250 98 L520 96 L524 100 L250 106Z" fill={c1}/>
+</g>
+</svg>

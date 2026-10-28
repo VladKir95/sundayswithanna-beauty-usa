@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import UvWidget from '../../components/UvWidget.astro';
+const faq = [
+  ['What is the UV index?', 'The UV index is a scale that shows how strong the sun’s ultraviolet radiation is at a given place and time. The higher the number, the faster unprotected skin can be damaged.'],
+  ['At what UV index should I wear sunscreen?', 'The World Health Organization advises sun protection from UV 3 and up. At 0 to 2 most people are fine for a short time outside, but sunscreen is still a good idea for long days outdoors, snow, water or very sensitive skin.'],
+  ['Do I need sunscreen on a cloudy day?', 'Often yes. Clouds block visible light and heat much more than UV, so the UV index can stay high on a cool or overcast day. Check the number, not the weather.'],
+  ['How often should I reapply sunscreen?', 'About every 2 hours when you are outside, and after swimming or sweating. If you are mostly indoors, one morning layer is usually enough.'],
+  ['Does the UV index change during the day?', 'Yes. It is lowest in the morning and evening, and highest around midday. The chart in the widget shows each hour of today so you can see your sunscreen window.']
+];
+const schema = { '@context':'https://schema.org','@type':'FAQPage', mainEntity: faq.map(([q,a]) => ({ '@type':'Question', name:q, acceptedAnswer:{ '@type':'Answer', text:a } })) };
+---
+<Base title="UV Index Today: Do I Need Sunscreen? | Sundays with Anna" description="Check the UV index for your location right now, see today’s peak and the hours when sunscreen matters, and get a simple answer to whether you need it.">
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+<section class="p" style="padding-top:56px"><div class="up" style="color:#8A8A8A">UV check</div>
+<h1 class="hd" style="margin:10px 0 0;font-size:84px;line-height:.95">UV index today</h1>
+<p style="margin:22px 0 0;max-width:640px;font-size:19px;line-height:1.55;font-family:'Newsreader',serif">A quick way to answer the question I ask myself every morning: do I need sunscreen today? Share your location or type a city and you get the UV index right now, today’s peak and your sunscreen window.</p></section>
+<section class="p" style="padding-top:36px"><UvWidget heading="Check your UV" id="uv" /></section>
+
+<section class="p sec" style="padding-top:72px"><h2 class="hd" style="margin:0 0 24px;font-size:44px">What each UV level means</h2>
+<div class="uvp-wrap"><table class="uvp">
+<thead><tr><th>UV index</th><th>Level</th><th>What to do</th></tr></thead>
+<tbody>
+<tr><td>0 to 2</td><td>Low</td><td>No sunscreen needed for a short time outside. Wear it for long days outdoors, snow, water or sensitive skin.</td></tr>
+<tr><td>3 to 5</td><td>Moderate</td><td>Sunscreen SPF 30 or higher. Sunglasses help.</td></tr>
+<tr><td>6 to 7</td><td>High</td><td>SPF 50, reapply every 2 hours, seek shade around midday.</td></tr>
+<tr><td>8 to 10</td><td>Very high</td><td>SPF 50+, reapply every 2 hours, hat and sunglasses, limit midday sun.</td></tr>
+<tr><td>11 and above</td><td>Extreme</td><td>SPF 50+, cover up and avoid the midday sun if you can.</td></tr>
+</tbody></table></div>
+<p style="margin:18px 0 0;max-width:640px;font-size:14px;color:#8A8A8A;line-height:1.5">Levels follow the World Health Organization UV index scale. This is general guidance, not medical advice. If you have a skin condition, are pregnant or breastfeeding, or use prescription actives, ask your doctor which sun protection is right for you.</p></section>
+
+<section class="p sec" style="padding-top:72px"><h2 class="hd" style="margin:0 0 24px;font-size:44px">Which sunscreen to reach for</h2>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px" class="uvp-cards">
+<a href="/beauty/round-lab-birch-juice-sunscreen-review/" class="uvp-card"><div class="up" style="color:#8A8A8A">Review</div><div class="hd" style="font-size:26px;margin-top:10px">Round Lab Birch Juice sunscreen</div><p>The regular sunscreen, sun serum, Mild-Up and stick compared.</p></a>
+<a href="/beauty/beauty-of-joseon-relief-sun-review/" class="uvp-card"><div class="up" style="color:#8A8A8A">Review</div><div class="hd" style="font-size:26px;margin-top:10px">Beauty of Joseon Relief Sun</div><p>Rice + Probiotics against Aqua-Fresh, ingredients and white cast.</p></a>
+<a href="/beauty/round-lab-camellia-deep-collagen-sun-serum-review/" class="uvp-card"><div class="up" style="color:#8A8A8A">Review</div><div class="hd" style="font-size:26px;margin-top:10px">Round Lab Camellia sun serum</div><p>A light sun serum that sits well under makeup.</p></a>
+</div>
+<div style="margin-top:22px"><a class="up arrow" href="/shop/#skincare">See all my sunscreens in the shop</a></div></section>
+
+<section class="p sec" style="padding-top:72px;padding-bottom:20px"><h2 class="hd" style="margin:0 0 24px;font-size:44px">UV questions</h2>
+<div class="uvp-faq">{faq.map(([q,a]) => (<div><h3>{q}</h3><p>{a}</p></div>))}</div></section>
+</Base>
+<style is:global>
+.s .uvp-wrap{overflow-x:auto}
+.s .uvp{width:100%;border-collapse:collapse;font-family:'Inter Tight',sans-serif;font-size:15px;min-width:560px}
+.s .uvp th{text-align:left;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8A8A8A;padding:12px 16px;border-bottom:1.5px solid #111}
+.s .uvp td{padding:16px;border-bottom:1px solid #E0E0E0;vertical-align:top;color:#4A4A4A}
+.s .uvp td:first-child{font-weight:600;color:#111;white-space:nowrap}
+.s .uvp td:nth-child(2){font-weight:600;color:#111;white-space:nowrap}
+.s .uvp-card{background:#F5F5F5;border-radius:18px;padding:28px;display:block;min-height:190px;color:#111;text-decoration:none}
+.s .uvp-card:hover{background:#EDEDED}
+.s .uvp-card p{margin:12px 0 0;font-family:'Newsreader',serif;font-size:16px;line-height:1.5;color:#4A4A4A}
+.s .uvp-faq{max-width:720px;display:flex;flex-direction:column;gap:22px}
+.s .uvp-faq h3{margin:0 0 6px;font-family:'Inter Tight',sans-serif;font-size:19px;color:#111}
+.s .uvp-faq p{margin:0;font-family:'Newsreader',serif;font-size:18px;line-height:1.6;color:#4A4A4A}
+@media(max-width:900px){.s .uvp-cards{grid-template-columns:minmax(0,1fr)!important}.s h1.hd[style*="84px"]{font-size:48px!important}}
+</style>

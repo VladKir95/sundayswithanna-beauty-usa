@@ -1,0 +1,165 @@
+---
+import { quizProducts } from '../data/quizProducts.mjs';
+const products = quizProducts.filter(p => p.live !== false);
+const { id = 'skin-quiz', heading = 'What is your skin type?' } = Astro.props;
+---
+<section class="sq is-start" id={id} aria-label="Skin quiz">
+  <div class="sq-start" data-view="start">
+    <div class="up sq-k">Skin quiz</div>
+    <h2 class="hd sq-h">{heading}</h2>
+    <div class="hand sq-hand">8 quick questions, 2 minutes</div>
+    <p class="sq-lead">Answer a few questions about how your skin feels and behaves. You get your skin type, a simple morning and evening routine, ingredients to look for and products from my shelf that fit.</p>
+    <button type="button" class="sq-btn" data-act="start">Start the quiz</button>
+    <p class="sq-fine">Your answers stay in your browser. Nothing is sent or saved.</p>
+  </div>
+  <div class="sq-q" data-view="q" hidden>
+    <div class="sq-top"><button type="button" class="sq-back" data-act="back">← Back</button><span class="sq-count" data-ref="count"></span></div>
+    <div class="sq-bar" aria-hidden="true"><i data-ref="bar"></i></div>
+    <h3 class="sq-qt" data-ref="qt" tabindex="-1"></h3>
+    <p class="sq-hint" data-ref="hint"></p>
+    <div class="sq-opts" data-ref="opts" role="group"></div>
+  </div>
+  <div class="sq-res" data-view="res" hidden aria-live="polite"></div>
+  <script type="application/json" class="sq-data" set:html={JSON.stringify(products)} />
+</section>
+
+<script is:inline>
+(function(){
+  var Q=[
+    {id:'wash',t:'An hour after washing your face, with nothing applied, your skin feels…',o:[['Tight, or a little itchy','dry'],['Comfortable, neither tight nor oily','normal'],['A bit shiny on the forehead and nose','combo'],['Shiny all over','oily']]},
+    {id:'mid',t:'By the afternoon, with no makeup, your skin looks…',o:[['Dull or matte, sometimes with flaky patches','dry'],['Fresh and even','normal'],['Shiny only in the T-zone','combo'],['Shiny all over','oily']]},
+    {id:'bk',t:'How often do you get breakouts or clogged pores?',o:[['Rarely','rare'],['Now and then, around stress or my cycle','some'],['Often, most of the time','often']]},
+    {id:'react',t:'How does your skin react to new products?',o:[['It rarely reacts','rare'],['Sometimes it stings, reddens or itches','some'],['It often reacts, even to gentle products','often']]},
+    {id:'concern',t:'What bothers you most right now?',o:[['Breakouts, blackheads and visible pores','pores'],['Dark spots and uneven tone','spots'],['Redness and sensitivity','red'],['Dryness and tightness','dry'],['Dullness and first fine lines','age'],['Nothing in particular, I want to keep my skin healthy','maint']]},
+    {id:'spf',t:'How often do you wear sunscreen?',o:[['Every day','daily'],['When it is sunny or I am outside','sometimes'],['Rarely or never','never']]},
+    {id:'routine',t:'What does your routine look like now?',o:[['Almost nothing','none'],['Cleanser and moisturizer','basic'],['A few steps, with a serum or two','mid'],['A long routine, six steps or more','long']]},
+    {id:'age',t:'Which age range are you in?',h:'Only used to tailor the tips.',o:[['Under 25','u25'],['25 to 34','25'],['35 to 44','35'],['45 or older','45']]}
+  ];
+  var TYPES={
+    dry:{n:'Dry skin',s:'Your skin makes less oil than it needs, so it tends to feel tight and can look dull or flaky. The goal is to add water and seal it in, and to protect the skin barrier.'},
+    normal:{n:'Normal skin',s:'Your skin is well balanced: comfortable, not too oily and not too dry. The goal is to keep it that way with a gentle routine and daily sunscreen.'},
+    combo:{n:'Combination skin',s:'Your T-zone makes more oil while your cheeks are normal or drier. The goal is to balance it: light textures and pore care where you need it, and comfort where you do not.'},
+    oily:{n:'Oily skin',s:'Your skin makes plenty of sebum, so it looks shiny and pores can look larger. The goal is light, non-greasy hydration and gentle pore care. Stripping the skin tends to make oiliness worse.'}
+  };
+  var CON={pores:'Breakouts and pores',spots:'Dark spots and uneven tone',red:'Redness and sensitivity',dry:'Dryness and tightness',age:'Dullness and first fine lines',maint:'Keeping skin healthy'};
+  var GUIDE={pores:['/skin-guide/acne-and-pores/','Acne and pores guide'],spots:['/skin-guide/even-skin-tone/','Even skin tone guide'],red:['/skin-guide/sensitivity-and-redness/','Sensitivity and redness guide'],dry:['/skin-guide/barrier-repair/','Barrier repair guide'],age:['/skin-guide/anti-aging/','Anti-aging guide'],maint:['/skin-guide/sun-protection/','Sun protection guide']};
+  var ACT={
+    pores:[['Niacinamide','niacinamide'],['Salicylic acid','salicylic-acid'],['Azelaic acid','azelaic-acid']],
+    spots:[['Niacinamide','niacinamide'],['Vitamin C','vitamin-c'],['Azelaic acid','azelaic-acid']],
+    red:[['Centella asiatica','centella-asiatica'],['Ceramides','ceramides'],['Hyaluronic acid','hyaluronic-acid']],
+    dry:[['Hyaluronic acid','hyaluronic-acid'],['Ceramides','ceramides'],['Peptides','peptides']],
+    age:[['Vitamin C','vitamin-c'],['Retinoids','retinoids'],['Peptides','peptides']],
+    maint:[['Hyaluronic acid','hyaluronic-acid'],['Niacinamide','niacinamide'],['Ceramides','ceramides']]
+  };
+  var root=document.querySelectorAll('.sq');
+  [].forEach.call(root,init);
+
+  function init(el){
+    var $=function(s){return el.querySelector(s)};
+    var views={start:$('[data-view=start]'),q:$('[data-view=q]'),res:$('[data-view=res]')};
+    var ref=function(n){return el.querySelector('[data-ref='+n+']')};
+    var PR=[];try{PR=JSON.parse(el.querySelector('.sq-data').textContent)}catch(e){}
+    var ans={},step=0;
+    function show(v){for(var k in views)views[k].hidden=(k!==v);el.classList.toggle('is-start',v==='start')}
+    function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+    function renderQ(){
+      var q=Q[step];
+      ref('count').textContent='Question '+(step+1)+' of '+Q.length;
+      ref('bar').style.width=((step)/Q.length*100)+'%';
+      ref('qt').textContent=q.t;ref('hint').textContent=q.h||'';ref('hint').hidden=!q.h;
+      var h='';q.o.forEach(function(o,i){h+='<button type="button" class="sq-opt'+(ans[q.id]===o[1]?' on':'')+'" data-i="'+i+'"><span class="sq-dot"></span><span>'+esc(o[0])+'</span></button>'});
+      ref('opts').innerHTML=h;
+      el.querySelector('[data-act=back]').style.visibility=step===0?'hidden':'visible';
+      show('q');
+    }
+    function focusQ(){try{ref('qt').focus({preventScroll:true})}catch(e){}}
+    ref('opts').addEventListener('click',function(e){
+      var b=e.target.closest('.sq-opt');if(!b)return;
+      var q=Q[step];ans[q.id]=q.o[+b.getAttribute('data-i')][1];
+      [].forEach.call(ref('opts').children,function(x){x.classList.toggle('on',x===b)});
+      setTimeout(function(){
+        if(step<Q.length-1){step++;renderQ();focusQ()}else{result()}
+      },160);
+    });
+    el.addEventListener('click',function(e){
+      var a=e.target.closest('[data-act]');if(!a)return;var act=a.getAttribute('data-act');
+      if(act==='start'){ans={};step=0;renderQ();focusQ();scrollTop()}
+      if(act==='back'&&step>0){step--;renderQ();focusQ()}
+      if(act==='retake'){ans={};step=0;renderQ();focusQ();scrollTop()}
+    });
+    function scrollTop(){var r=el.getBoundingClientRect();if(r.top<0)el.scrollIntoView({block:'start'})}
+
+    function typeOf(){
+      var s={dry:0,normal:0,combo:0,oily:0};s[ans.wash]+=2;s[ans.mid]+=2;
+      if(ans.wash==='dry'&&ans.mid==='oily'||ans.wash==='oily'&&ans.mid==='dry')return 'combo';
+      var pr=['combo','oily','dry','normal'],best='normal',bv=-1;
+      pr.forEach(function(k){if(s[k]>bv){bv=s[k];best=k}});
+      return best;
+    }
+    function result(){
+      var type=typeOf(),sens=ans.react!=='rare',strong=ans.react==='often';
+      var acne=ans.bk==='often'||(ans.bk==='some'&&ans.concern==='pores');
+      var con=ans.concern;
+      if(con==='maint'){con=type==='dry'?'dry':(type==='oily'||type==='combo')?'pores':'maint'}
+      var T=TYPES[type];
+      var adult=ans.age!=='u25',ret=(con==='age')&&adult&&!strong;
+      // routine
+      var am=[],pm=[];
+      var clean=(type==='dry'||sens)?'a creamy, low-foam cleanser (or just water if your skin feels tight in the morning)':(type==='normal'?'a gentle gel or milky cleanser':'a gentle gel cleanser');
+      am.push(['Cleanse','Use '+clean+'. Skip scrubs and anything that leaves skin squeaky.']);
+      var amT={pores:['Niacinamide serum','Helps with oil balance and the look of pores.'],spots:['Vitamin C or niacinamide serum','Supports brighter tone and evens the look of marks.'],red:['Centella serum or essence','Calms and supports a reactive skin.'],dry:['Hyaluronic acid serum on damp skin','Draws water in; seal it with your moisturizer right after.'],age:['Vitamin C serum','An antioxidant for glow and extra daytime protection.'],maint:['Hydrating serum (optional)','A light layer of hyaluronic acid keeps skin plump.']}[con];
+      if(ans.routine!=='none')am.push(['Treat: '+amT[0],amT[1]]);
+      var mo=type==='oily'?'a light gel-cream':type==='combo'?'a lightweight lotion or gel-cream':type==='dry'?'a richer cream with ceramides':'a light cream';
+      am.push(['Moisturize','Use '+mo+'. Every skin type needs one, even oily skin.']);
+      am.push(['Sunscreen','SPF 30 or higher, every morning, as the last step. Reapply every 2 hours outside.']);
+      var wearing=ans.spf!=='never';
+      pm.push(['Cleanse',wearing?'Take sunscreen off first with a cleansing balm or oil, then use your gentle cleanser.':'Use your gentle cleanser.']);
+      var pmT={pores:['Salicylic acid (BHA) or azelaic acid','Two or three nights a week to start. Do not scrub or pick.'],spots:['Azelaic acid or niacinamide','Fades the look of marks over weeks, not days. Sunscreen decides the result.'],red:['Nothing strong','Keep to centella and ceramides until your skin feels calm.'],dry:['Ceramide serum or cream','Rebuilds the barrier so moisture stays in.'],age:ret?['A retinoid, slowly','Start one or two nights a week at a low strength. Skip it if you are pregnant or breastfeeding.']:['Peptides','A gentle support for firmness without irritation.'],maint:['Nothing extra','A simple routine is enough. Add one active only if a concern shows up.']}[con];
+      if(ans.routine!=='none'&&con!=='maint')pm.push(['Treat: '+pmT[0],pmT[1]]);
+      pm.push(['Moisturize','Use '+mo+(type==='dry'?', and a little extra on dry areas.':'.')]);
+      // notes
+      var notes=[];
+      if(ans.spf==='never')notes.push('Sunscreen is the one step with the strongest evidence for healthy skin and for dark spots and fine lines. If you add one thing, add this. <a href="/uv/">Check today’s UV index</a>.');
+      else if(ans.spf==='sometimes')notes.push('UV is there on cloudy days and through windows. Making sunscreen a daily habit matters more than which one you pick. <a href="/uv/">Check today’s UV index</a>.');
+      else notes.push('You already wear sunscreen every day, which is the best habit here. Keep it up.');
+      if(ans.routine==='none')notes.push('Start with just three steps: cleanser, moisturizer and sunscreen. Add one treatment after a few weeks.');
+      if(ans.routine==='long'&&(sens||acne))notes.push('Your routine may be longer than your skin needs. Try the steps above for two weeks and add things back one at a time.');
+      if(sens)notes.push('Introduce one new product at a time and patch test it behind your ear for a few days. Choose fragrance-free formulas where you can.');
+      if(acne&&con!=='pores')notes.push('You get breakouts fairly often. A salicylic acid or azelaic acid step a few nights a week can help.');
+      if(con==='age'&&!adult)notes.push('At your age, anti-aging is mostly sunscreen and hydration. Retinoids are not needed yet.');
+      // avoid
+      var avoid=[];
+      if(type==='oily'||type==='combo')avoid.push('Harsh scrubs and strong foaming cleansers. They tend to push skin to make more oil.');
+      if(type==='dry')avoid.push('Foaming cleansers, hot water and over-exfoliating. They weaken the barrier.');
+      if(sens)avoid.push('Fragrance, essential oils and several new actives at once.');
+      if(acne)avoid.push('Picking and over-drying spots. Both make marks last longer.');
+      if(!avoid.length)avoid.push('Too many new products at the same time.');
+      // products
+      function sc(p,spf){var v=(p.priority||0)*0.1;
+        if(p.concerns&&p.concerns.indexOf(con)>-1)v+=3;
+        if(p.types&&p.types.length){v+=p.types.indexOf(type)>-1?2:-1}
+        if(sens&&p.sensitive)v+=spf?5:1;
+        if(strong&&p.avoidSensitive)v-=10;
+        return v}
+      function best(list,spf){var o=null,bv=-1e9;list.forEach(function(p){var v=sc(p,spf);if(v>bv){bv=v;o=p}});return o}
+      var spfPick=best(PR.filter(function(p){return p.role==='spf'}),true);
+      var care=PR.filter(function(p){return p.role==='care'}).map(function(p){return {p:p,v:sc(p,false)}}).sort(function(a,b){return b.v-a.v}).filter(function(x){return x.v>=3}).slice(0,3).map(function(x){return x.p});
+      var picks=(spfPick?[spfPick]:[]).concat(care).slice(0,4);
+      // render
+      var tags=[T.n];if(sens)tags.push('Sensitive-leaning');if(acne)tags.push('Breakout-prone');tags.push('Focus: '+CON[ans.concern==='maint'?con:ans.concern]);
+      var h='<div class="sq-r-top"><div class="up sq-k">Your skin analysis</div><h2 class="hd sq-h">'+esc(T.n)+'</h2>';
+      h+='<div class="sq-tags">'+tags.map(function(t){return '<span>'+esc(t)+'</span>'}).join('')+'</div>';
+      h+='<p class="sq-lead">'+esc(T.s)+'</p></div>';
+      function steps(a){return '<ol>'+a.map(function(s){return '<li><b>'+esc(s[0])+'</b><span>'+esc(s[1])+'</span></li>'}).join('')+'</ol>'}
+      h+='<div class="sq-cols"><div class="sq-card"><div class="up sq-k">Morning</div>'+steps(am)+'</div><div class="sq-card"><div class="up sq-k">Evening</div>'+steps(pm)+'</div></div>';
+      h+='<div class="sq-cols"><div class="sq-card"><div class="up sq-k">Ingredients to look for</div><ul class="sq-chips">'+ACT[con].map(function(a){return '<li><a href="/skin-guide/actives/'+a[1]+'/">'+esc(a[0])+'</a></li>'}).join('')+'</ul><div class="up sq-k" style="margin-top:20px">Go easy on</div><ul class="sq-list">'+avoid.map(function(a){return '<li>'+esc(a)+'</li>'}).join('')+'</ul></div>';
+      h+='<div class="sq-card"><div class="up sq-k">Good to know</div><ul class="sq-list">'+notes.map(function(n){return '<li>'+n+'</li>'}).join('')+'</ul></div></div>';
+      h+='<div class="sq-pick"><div class="up sq-k">Products from my shelf that fit</div><div class="sq-picks">'+picks.map(function(p,i){return '<a class="sq-p" href="'+esc(p.href)+'"><span class="sq-pn">0'+(i+1)+'</span><b>'+esc(p.name)+'</b><span>'+esc(p.why)+'</span><em>'+esc(p.label)+' →</em></a>'}).join('')+'</div><p class="sq-fine"><a href="/shop/">See prices in my shop</a> · <a href="'+GUIDE[con][0]+'">'+GUIDE[con][1]+'</a></p></div>';
+      h+='<div class="sq-end"><button type="button" class="sq-btn" data-act="retake">Retake the quiz</button><a class="sq-btn2" href="#letter">Get my Sunday letter</a></div>';
+      h+='<p class="sq-fine">This quiz is a general guide, not a diagnosis. If you have persistent acne, a rash, or skin that burns or itches, or you are pregnant or breastfeeding, ask a dermatologist or doctor before starting new actives.</p>';
+      views.res.innerHTML=h;show('res');
+      scrollTop();
+    }
+  }
+})();
+</script>

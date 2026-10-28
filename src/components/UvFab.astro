@@ -1,0 +1,114 @@
+---
+import UvWidget from './UvWidget.astro';
+---
+<button type="button" class="uvfab" id="uvfab" draggable="false" aria-label="Open the UV check" aria-expanded="false" aria-controls="uvfab-panel">
+  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+  <span class="uvfab-t" id="uvfab-t">UV</span>
+</button>
+<div class="uvfab-panel" id="uvfab-panel" role="dialog" aria-label="UV check" hidden>
+  <button type="button" class="uvfab-x" id="uvfab-x" aria-label="Close">×</button>
+  <UvWidget heading="Sunscreen today?" id="uv-fab" compact={true} />
+</div>
+
+<script is:inline>
+(function(){
+  var fab=document.getElementById('uvfab'), panel=document.getElementById('uvfab-panel'), t=document.getElementById('uvfab-t'), x=document.getElementById('uvfab-x');
+  if(!fab||!panel)return;
+  var KEY='uvfab-pos', SIZE=52, M=14;
+  var pos={side:'right',y:null};
+  try{var sp=JSON.parse(localStorage.getItem(KEY)||'null');if(sp&&(sp.side==='left'||sp.side==='right')&&typeof sp.y==='number')pos=sp}catch(e){}
+  function clampY(y){return Math.max(M,Math.min(window.innerHeight-SIZE-M,y))}
+  function place(animate){
+    var y=pos.y==null?window.innerHeight-SIZE-96:pos.y; y=clampY(y);
+    fab.style.transition=animate?'left .28s cubic-bezier(.2,.9,.3,1.2),top .28s ease':'none';
+    fab.style.left=(pos.side==='left'?M:window.innerWidth-SIZE-M)+'px';
+    fab.style.top=y+'px';
+    if(open)placePanel();
+  }
+  var open=false;
+  function placePanel(){
+    var r=fab.getBoundingClientRect(), w=Math.min(420,window.innerWidth-24);
+    panel.style.width=w+'px';
+    var left=pos.side==='left'?M:window.innerWidth-w-M; panel.style.left=Math.max(12,left)+'px';
+    var h=panel.offsetHeight||400, below=window.innerHeight-r.bottom-12, above=r.top-12;
+    var top = above>=Math.min(h,window.innerHeight*0.6)||above>below ? Math.max(12,r.top-h-10) : r.bottom+10;
+    if(top+h>window.innerHeight-12)top=Math.max(12,window.innerHeight-h-12);
+    panel.style.top=top+'px';
+  }
+  function setOpen(v){
+    open=v;panel.hidden=!v;fab.setAttribute('aria-expanded',String(v));
+    if(v){placePanel();requestAnimationFrame(placePanel)}
+  }
+  // drag + snap to the nearest side edge
+  var sx,sy,ox,oy,drag=false,moved=false,pid=null;
+  fab.addEventListener('dragstart',function(e){e.preventDefault()});
+  fab.addEventListener('pointerdown',function(e){
+    if(e.button!==0)return;e.preventDefault();
+    pid=e.pointerId;fab.setPointerCapture(pid);var r=fab.getBoundingClientRect();
+    sx=e.clientX;sy=e.clientY;ox=r.left;oy=r.top;drag=true;moved=false;fab.style.transition='none';
+  });
+  fab.addEventListener('pointermove',function(e){
+    if(!drag)return;var dx=e.clientX-sx,dy=e.clientY-sy;
+    if(!moved&&Math.abs(dx)+Math.abs(dy)<6)return;
+    moved=true;fab.classList.add('drag');
+    fab.style.left=Math.max(0,Math.min(window.innerWidth-SIZE,ox+dx))+'px';
+    fab.style.top=Math.max(0,Math.min(window.innerHeight-SIZE,oy+dy))+'px';
+    if(open)placePanel();
+  });
+  function end(){
+    if(!drag)return;drag=false;fab.classList.remove('drag');
+    if(pid!=null){try{fab.releasePointerCapture(pid)}catch(e){}}
+    if(moved){
+      var r=fab.getBoundingClientRect();
+      pos={side:(r.left+SIZE/2<window.innerWidth/2)?'left':'right',y:clampY(r.top)};
+      try{localStorage.setItem(KEY,JSON.stringify(pos))}catch(e){}
+      place(true);
+      setTimeout(function(){if(open)placePanel()},300);
+    }
+  }
+  fab.addEventListener('pointerup',end);
+  fab.addEventListener('pointercancel',end);
+  fab.addEventListener('click',function(){if(moved){moved=false;return}setOpen(!open)});
+  x.addEventListener('click',function(){setOpen(false);fab.focus()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&open){setOpen(false);fab.focus()}});
+  document.addEventListener('pointerdown',function(e){if(open&&!panel.contains(e.target)&&!fab.contains(e.target))setOpen(false)});
+  window.addEventListener('resize',function(){place(false)});
+  window.addEventListener('uvw:update',function(e){
+    var d=e.detail;t.textContent=d.sunUp||d.now>=0.5?d.now.toFixed(0):'UV';
+    fab.style.background=d.color;fab.style.color=d.text;fab.title='UV '+d.now.toFixed(1)+' ('+d.name+')';
+  });
+  place(false);
+})();
+</script>
+
+<style is:global>
+.s .uvfab{position:fixed;z-index:60;width:52px;height:52px;border-radius:50%;border:0;background:#111;color:#fff;cursor:grab;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;box-shadow:0 6px 20px rgba(0,0,0,.22);touch-action:none;user-select:none;-webkit-user-select:none;padding:0;font-family:'Inter Tight',sans-serif}
+.s .uvfab:hover{transform:scale(1.06)}
+.s .uvfab.drag{cursor:grabbing;transform:scale(1.12);box-shadow:0 12px 30px rgba(0,0,0,.3)}
+.s .uvfab svg{display:block}
+.s .uvfab-t{font-size:11px;font-weight:700;line-height:1;margin-top:1px;letter-spacing:.02em}
+.s .uvfab-panel{position:fixed;z-index:61;max-height:calc(100vh - 24px);overflow-y:auto;border-radius:16px;box-shadow:0 18px 50px rgba(0,0,0,.25);background:#F5F5F5}
+.s .uvfab-panel[hidden]{display:none}
+.s .uvfab-x{position:absolute;top:8px;right:10px;z-index:2;width:30px;height:30px;border-radius:50%;border:0;background:#fff;color:#111;font-size:20px;line-height:1;cursor:pointer}
+.s .uvfab-panel .uvw-head{padding-right:34px}
+/* the floating panel always uses the compact layout (self-contained so it never depends on page CSS) */
+.s .uvfab-panel{overflow-x:hidden;max-width:calc(100vw - 24px)}
+.s .uvfab-panel .uvw{padding:18px 16px 14px;border-radius:16px;background:#F5F5F5}
+.s .uvfab-panel .uvw-h{font-size:26px;line-height:1.05;margin-top:6px}
+.s .uvfab-panel .uvw-hand{display:none}
+.s .uvfab-panel .uvw-ctl{margin-top:14px;gap:8px}
+.s .uvfab-panel .uvw-form{min-width:0;flex:1 1 100%;max-width:none}
+.s .uvfab-panel .uvw-body{margin-top:16px}
+.s .uvfab-panel .uvw-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.s .uvfab-panel .uvw-now{min-height:0;padding:16px;gap:6px}
+.s .uvfab-panel .uvw-num{font-size:60px}
+.s .uvfab-panel .uvw-lvl{font-size:20px}
+.s .uvfab-panel .uvw-verdict{font-size:20px}
+.s .uvfab-panel .uvw-info{padding:16px;min-width:0}
+.s .uvfab-panel .uvw-info p{font-size:15px;overflow-wrap:anywhere}
+.s .uvfab-panel .uvw-facts b{display:block;min-width:0}
+.s .uvfab-panel .uvw-chart{height:110px;margin-top:12px;padding:12px 10px 0}
+.s .uvfab-panel .uvw-note{display:none}
+.s .uvfab-panel .uvw-fine{font-size:11px}
+@media(prefers-reduced-motion:reduce){.s .uvfab{transition:none!important}}
+</style>

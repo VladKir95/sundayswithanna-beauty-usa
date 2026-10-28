@@ -1,0 +1,39 @@
+---
+const states = [
+  { id: 'tight', word: 'tight.', go: 'Hydrating serum, then a ceramide cream', note: 'press it in, don’t rub', why: 'A lightweight hyaluronic acid serum on damp skin, sealed with a barrier cream, helps skin feel comfortable instead of tight.', look: 'Hyaluronic acid, glycerin, ceramides, panthenol', href: '/skin-guide/dry-and-tight-skin/' },
+  { id: 'dull', word: 'dull.', go: 'Gentle exfoliation and vitamin C', note: 'glow comes from routine', why: 'A mild acid once or twice a week and a vitamin C in the morning help skin look fresher, as long as sunscreen follows every day.', look: 'Lactic acid, PHA, vitamin C, niacinamide', href: '/skin-guide/even-skin-tone/' },
+  { id: 'oily', word: 'oily.', go: 'Gel cleanser and a light gel moisturizer', note: 'don’t skip moisturizer', why: 'Oily skin still needs water. A light moisturizer and niacinamide keep shine and visible pores in check without stripping.', look: 'Niacinamide, salicylic acid, zinc, light gels', href: '/skin-guide/acne-and-pores/' },
+  { id: 'irritated', word: 'irritated.', go: 'Pause the actives, keep it simple', note: 'less is more here', why: 'When skin stings or looks red, cleanser, moisturizer and sunscreen are enough for a while, so the barrier can settle.', look: 'Centella, panthenol, ceramides, fragrance-free', href: '/skin-guide/sensitivity-and-redness/' },
+];
+---
+<section class="p sec"><div class="sf" id="skinfeels">
+<div class="sf-text">
+<div class="up sf-k">My skin feels:</div>
+<div class="sf-tabs" role="group" aria-label="Choose how your skin feels">
+{states.map((s, i) => (<button type="button" class={'sf-tab' + (i === 0 ? ' on' : '')} data-i={i} aria-pressed={i === 0 ? 'true' : 'false'}>{s.id}</button>))}
+</div>
+{states.map((s, i) => (
+<div class="sf-panel" data-i={i} hidden={i !== 0}>
+<div class="sf-word">{s.word}</div>
+<div class="sf-det">
+<div class="up">Your new go-to:</div><div class="sf-go">{s.go}</div>
+<div class="hand sf-note">{s.note}</div>
+<div class="up">Why it helps:</div><div>{s.why}</div>
+<div class="up sf-lk">Look for:</div><div>{s.look}</div>
+<a class="up arrow sf-more" href={s.href}>Read the guide</a>
+</div></div>
+))}
+</div>
+<div class="sf-img ph"><span>Photo<br><em>Skin, shelf or routine moment</em></span></div>
+</div></section>
+<script is:inline>
+(function(){
+  var root=document.getElementById('skinfeels'); if(!root) return;
+  var tabs=root.querySelectorAll('.sf-tab'), panels=root.querySelectorAll('.sf-panel');
+  tabs.forEach(function(t){ t.addEventListener('click',function(){
+    var i=t.getAttribute('data-i');
+    tabs.forEach(function(x){ var on=x===t; x.classList.toggle('on',on); x.setAttribute('aria-pressed',on?'true':'false'); });
+    panels.forEach(function(p){ p.hidden = p.getAttribute('data-i')!==i; });
+  }); });
+})();
+</script>

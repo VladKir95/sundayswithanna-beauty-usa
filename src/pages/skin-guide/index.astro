@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import { goals, actives } from '../../data/guide';
+import { swatch } from '../../data/swatch';
+import Swatch from '../../components/Swatch.astro';
+---
+<Base title="Skin guide: routines, actives and what works | Sundays with Anna" description="Pick what your skin is doing and follow a simple morning and night routine. Plain-English guides to the key skincare ingredients, with what I use myself.">
+<section class="p g-top"><div class="up" style="color:#8A8A8A">Skin guide</div><h1 class="hd g-h1">Skin guide</h1>
+<p class="serif g-lead">Pick what your skin is doing, and follow a simple routine with the ingredients that matter. Everything here is what I use or have tried myself.</p><div class="hand" style="transform:rotate(-2deg);font-size:34px">start with one step, not ten</div></section>
+
+<section class="p sec" style="padding-top:72px"><div class="up" style="color:#8A8A8A;margin-bottom:12px">Start here</div><h2 class="hd g-h2">What is your skin up to?</h2>
+<p class="serif g-sub">Choose what sounds like you right now. Each page has a routine, a few ingredients worth knowing, and what I actually use.</p>
+<div class="g-goals">
+{goals.map((g,i)=>(<a class="g-goal" href={`/skin-guide/${g.slug}/`}><span class="g-num">{String(i+1).padStart(2,'0')}</span><span><span class="g-gt">{g.name}</span><span class="g-gd">{g.short}</span></span></a>))}
+</div></section>
+
+<section class="p sec"><div class="up" style="color:#8A8A8A;margin-bottom:12px">The basics</div><h2 class="hd g-h2">The order I follow</h2>
+<p class="serif g-sub">Thinnest to thickest, and sunscreen last in the morning. That is really all of it.</p>
+<div class="g-rt">
+<div><h3 class="hd">Morning</h3><span class="hand">fast and light</span>
+<div class="g-row"><div class="g-rn">1</div><div><div class="g-rowt">Cleanse<i class="g-skip">or just water</i></div><div class="g-rowd">A gentle cleanser</div></div></div>
+<div class="g-row"><div class="g-rn">2</div><div><div class="g-rowt">Tone or a pad<i class="g-skip">if you like</i></div><div class="g-rowd">Something hydrating</div></div></div>
+<div class="g-row"><div class="g-rn">3</div><div><div class="g-rowt">Serum</div><div class="g-rowd">Thin, water-based textures first</div></div></div>
+<div class="g-row"><div class="g-rn">4</div><div><div class="g-rowt">Moisturize</div><div class="g-rowd">To lock everything in</div></div></div>
+<div class="g-row"><div class="g-rn">5</div><div><div class="g-rowt">SPF</div><div class="g-rowd">Always last, before makeup</div></div></div></div>
+<div><h3 class="hd">Night</h3><span class="hand">slow and caring</span>
+<div class="g-row"><div class="g-rn">1</div><div><div class="g-rowt">Cleanse</div><div class="g-rowd">Twice if you wore SPF or makeup</div></div></div>
+<div class="g-row"><div class="g-rn">2</div><div><div class="g-rowt">Tone or a pad<i class="g-skip">a few nights a week</i></div><div class="g-rowd">Exfoliating pad if your skin likes it</div></div></div>
+<div class="g-row"><div class="g-rn">3</div><div><div class="g-rowt">Treat</div><div class="g-rowd">One active at a time</div></div></div>
+<div class="g-row"><div class="g-rn">4</div><div><div class="g-rowt">Moisturize</div><div class="g-rowd">Richer than in the morning</div></div></div>
+<div class="g-row"><div class="g-rn">5</div><div><div class="g-rowt">Mask<i class="g-skip">once or twice a week</i></div><div class="g-rowd">My night mask ritual</div></div></div></div>
+</div>
+<div class="g-note"><div class="g-lab">What I never layer</div><p class="serif" style="margin:0;font-size:19px">Strong exfoliating acids and retinoids go on separate nights. I add one new active at a time and give it a few weeks. In the morning, sunscreen is always the last step.</p><div class="hand" style="transform:rotate(-2deg);margin-top:10px">when in doubt, fewer steps</div></div></section>
+
+<section class="p sec"><div class="up" style="color:#8A8A8A;margin-bottom:12px">Ingredients</div><h2 class="hd g-h2">Ingredients, explained simply</h2>
+<p class="serif g-sub">The label usually tells you what a product is for. Here is what each group does and who it suits.</p>
+<div class="g-actives">
+{actives.map(a=>(<a class="g-act" href={`/skin-guide/actives/${a.slug}/`}><b>{a.name}</b><span>{a.summary}</span><i>{a.includes.join(', ')}</i><em class="g-more">Read more</em></a>))}
+</div></section>
+</Base>

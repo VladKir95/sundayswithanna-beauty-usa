@@ -1,0 +1,8 @@
+---
+const { title, description, faq = [], date = '2026-10-25' } = Astro.props;
+const data = [
+  { '@context': 'https://schema.org', '@type': 'Article', headline: title, description, datePublished: date, dateModified: date, author: { '@type': 'Person', name: 'Anna', url: 'https://www.instagram.com/sundayswithanna/' }, publisher: { '@type': 'Organization', name: 'Sundays with Anna' } },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a.replace(/<[^>]+>/g, '') } })) },
+];
+---
+<script type="application/ld+json" set:html={JSON.stringify(data)}></script>

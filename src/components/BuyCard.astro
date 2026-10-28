@@ -1,0 +1,63 @@
+---
+import { categories, slugOf } from '../data/shop.mjs';
+const { names = [], heading = 'Where to buy' } = Astro.props;
+const all = categories.flatMap(c => c.groups.flatMap(g => g.items));
+const items = names.map(n => all.find(i => i.name === n)).filter(Boolean).map(it => {
+  const singles = it.rows.filter(r => r.p != null && !r.set).map(r => r.p);
+  return { ...it, low: singles.length ? Math.min(...singles) : null };
+});
+const money = (n) => '$' + n.toFixed(2);
+---
+{items.length > 0 && (
+<aside class="bc" aria-label={heading}>
+  <div class="bc-top"><div class="up bc-k">{heading}</div><div class="hand bc-h">where I buy mine</div></div>
+  <div class={'bc-grid' + (items.length === 1 ? ' one' : '')}>
+    {items.map(it => (
+      <div class="bc-card">
+        <div class="bc-info"><div><div class="bc-name">{it.name}</div><div class="bc-sub">{it.sub}</div></div>
+        <div class="bc-low">{it.low != null ? <><small>from</small>{money(it.low)}</> : <small>see shops</small>}</div></div>
+        <div class="bc-rows">
+          {it.rows.map(r => (
+            <a class="bc-row" href={r.u} rel="noopener sponsored" target="_blank"><span>{r.shop}</span>{r.p != null ? <b>{money(r.p)}{r.set ? <em>{r.set}</em> : null}</b> : <i>{r.note || 'check price'}</i>}</a>
+          ))}
+        </div>
+        <a class="bc-shop" href={'/shop/#' + slugOf(it.name)}>See it in my shop <span aria-hidden="true">→</span></a>
+      </div>
+    ))}
+  </div>
+  <p class="bc-fine">Prices checked on October 25, 2026 and they change often. More picks in <a href="/shop/">my shop</a>.</p>
+</aside>
+)}
+<style is:global>
+.s .bc *:not(.hand){font-family:'Inter Tight',sans-serif!important}
+.s .art .bc a.bc-row,.s .bc a.bc-row{color:#111!important;border-bottom-color:#CFCFCF;text-decoration:none!important}
+.s .art .bc a.bc-row:last-child{border-bottom:0}
+.s .art .bc .bc-fine a{color:#6B6B6B!important;text-decoration:underline}
+.s .art .bc .bc-row i{color:#8A8A8A!important}
+.s .art .bc .bc-row b em{color:#8A8A8A!important}
+.s .bc{background:#F1F1F1;border-radius:18px;padding:26px 26px 18px;margin:36px 0 44px}
+.s .bc-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.s .bc-k{color:#8A8A8A}
+.s .bc-h{font-size:30px;transform:rotate(-2deg);color:#C2517A;line-height:1}
+.s .bc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.s .bc-grid.one{grid-template-columns:minmax(0,420px)}
+.s .bc-card{background:#E6E6E6;border-radius:14px;padding:18px 18px 6px;min-width:0}
+.s .bc-info{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.s .bc-name{font-family:'Inter Tight',sans-serif;font-weight:600;font-size:17px;line-height:1.2;color:#111}
+.s .bc-sub{font-size:13px;color:#6B6B6B;margin-top:4px}
+.s .bc-low{text-align:right;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:20px;color:#111;white-space:nowrap}
+.s .bc-low small{display:block;font-size:11px;font-weight:400;color:#8A8A8A}
+.s .bc-rows{margin-top:12px;border-top:1px solid #CFCFCF}
+.s .bc-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid #CFCFCF;font-family:'Inter Tight',sans-serif;font-size:14px;color:#111;text-decoration:none!important}
+.s .bc-row:last-child{border-bottom:0}
+.s .bc-row:hover{background:#DDDDDD}
+.s .bc-row b{font-weight:600;text-align:right}
+.s .bc-row b em{display:block;font-style:normal;font-weight:400;font-size:11px;color:#8A8A8A}
+.s .bc-row i{font-style:normal;color:#8A8A8A;font-size:13px}
+.s .bc-shop{display:inline-block;margin:12px 0 14px;padding:7px 15px;border-radius:999px;background:#F2C6D3;color:#8F2E47!important;font:600 12px 'Inter Tight',sans-serif!important;letter-spacing:.06em;text-transform:uppercase;text-decoration:none!important}
+.s .art .bc a.bc-shop{color:#8F2E47!important;text-decoration:none!important}
+.s .bc-shop:hover{background:#EBB1C3}
+.s .bc-fine{font-family:'Inter Tight',sans-serif;font-size:12px;line-height:1.5;color:#8A8A8A;margin:14px 0 0}
+.s .bc-fine a{text-decoration:underline;color:inherit}
+@media(max-width:640px){.s .bc-grid,.s .bc-grid.one{grid-template-columns:minmax(0,1fr)}.s .bc{padding:20px 16px 14px}}
+</style>

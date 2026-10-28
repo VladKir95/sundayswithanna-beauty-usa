@@ -1,0 +1,29 @@
+---
+import { photos, chips } from '../data/intro.mjs';
+---
+<section class="p sec hi" id="intro">
+  <div class="hi-grid">
+    <div class="hi-text">
+      <div class="up hi-k">Welcome</div>
+      <h2 class="hd hi-title">Hi, I’m Anna</h2>
+      <div class="hand hi-hand">welcome to my Sundays</div>
+      <p class="hi-p">I started sharing beauty on Instagram about three or four years ago, and a lovely community of women grew around it. Now I film skincare, shopping and travel on YouTube every week, in a quiet, aesthetic way.</p>
+      <p class="hi-p">I’m a homebody who loves to travel, and I like turning small everyday moments into little rituals. Skincare is my favourite one.</p>
+      <ul class="hi-chips">{chips.map(c => <li>{c.href ? <a href={c.href} {...(c.external ? { target: '_blank', rel: 'noopener' } : {})}>{c.label}{c.external ? <i aria-hidden="true"> ↗</i> : null}</a> : <span>{c.label}</span>}</li>)}</ul>
+      <div class="hi-links"><a class="up arrow" href="/about/">More about me</a><a class="up arrow" href="/beauty/">Read all reviews</a></div>
+    </div>
+    <div class="hi-collage" aria-label="Photos of Anna">
+      {photos.map((ph, i) => (
+        <div class={'pol hi-pol hi-pol' + (i + 1)}>
+          <div class="tp"></div>
+          {ph.src ? <div class="ph"><img src={ph.src} alt={ph.alt} loading="lazy" /></div> : <div class="ph"><span>Photo<br><em>{ph.alt}</em></span></div>}
+          <div class="cap">{ph.cap}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="hi-band"><h3 class="hd">I only write about what I actually use</h3></div>
+  <p class="hi-rule">Products I have used for weeks or years. I show how they look, how they feel, and whether they stayed.</p>
+  <a class="hi-cue" href="#favourites"><span class="up">What I’m loving this month</span><i aria-hidden="true">↓</i></a>
+</section>

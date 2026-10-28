@@ -1,0 +1,11 @@
+---
+const { title, rows = [], img, alt = '', pos = '50% 50%', flip = false } = Astro.props;
+---
+<div class={`pf${flip ? ' flip' : ''}`}>
+<div class="pf-t">
+<div class="up pf-k">Product facts</div>
+<h3 class="hd pf-h">{title}</h3>
+<div class="pf-r">{rows.map((r: [string,string]) => (<div class="pf-row"><b>{r[0]}</b><span>{r[1]}</span></div>))}</div>
+</div>
+<div class="pf-p">{img ? <img src={img} alt={alt} style={`object-position:${pos}`} loading="lazy"> : <div class="ph" style="height:100%;min-height:inherit"><span>Product photo coming soon</span></div>}</div>
+</div>

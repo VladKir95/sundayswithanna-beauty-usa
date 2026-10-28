@@ -1,0 +1,13 @@
+---
+const steps = [
+  ['Slow skincare', 'A mask or an extra-hydrating routine, with no rush.'],
+  ['Gentle movement', 'Yoga, pilates or a long walk to start the week calmly.'],
+  ['Fresh sheets', 'A clean bed makes Sunday night feel like a little treat.'],
+  ['Plan the week', 'Ten minutes with a notebook, so Monday feels lighter.'],
+  ['Screen-free evening', 'Tea, a book and an early night.'],
+];
+---
+<section class="p sr-wrap"><div class="sr">
+<div class="sr-l"><div class="up sr-k">A little ritual</div><div class="sr-word">Sunday.</div><div class="hand sr-hand">my Sunday reset</div><p>Five small things that turn the last day of the week into a calm start to the next one.</p></div>
+<ol class="sr-list">{steps.map((s, i) => (<li><span class="up">{String(i + 1).padStart(2, '0')}</span><div><b>{s[0]}</b><div>{s[1]}</div></div></li>))}</ol>
+</div></section>

@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import { guides, itemsFor } from '../../data/giftGuides.mjs';
+export function getStaticPaths() { return guides.filter(g => g.live).map(g => ({ params: { slug: g.slug }, props: { g } })); }
+const { g } = Astro.props;
+const items = itemsFor(g);
+const money = (n) => '$' + n.toFixed(2);
+---
+<Base title={g.title + ' | Sundays with Anna'} description={g.blurb}>
+<section class="p gg-top"><a class="up arrow" href="/gift-guides/">All gift guides</a><h1 class="hd gg-h1" style="margin-top:18px">{g.title}</h1><p class="gg-lead">{g.blurb}</p><p class="gg-fine">Prices were checked in October 2026 and change often. Sets and bundles are marked and are not counted in the “from” price. Some links may be affiliate links, see my <a href="/affiliate-disclosure/" style="text-decoration:underline">affiliate disclosure</a>.</p></section>
+<section class="p gg-list">
+{items.map((it, i) => (
+<article class="gg-item">
+{it.img ? <div class="gg-img"><img src={it.img} alt={it.name} loading="lazy" /></div> : <div class="gg-img ph"><span>Product photo<br><em>{it.name}</em></span></div>}
+<div class="gg-info">
+<div class="up gg-n">{String(i + 1).padStart(2, '0')}</div>
+<h2 class="gg-name">{it.review ? <a href={it.review}>{it.name}</a> : it.name}</h2>
+<div class="gg-sub">{it.sub}</div>
+{it.low != null ? <div class="gg-low"><small>from</small> {money(it.low)}</div> : null}
+<div class="gg-rows">{it.rows.map(r => (<a class="gg-row" href={r.u} rel="noopener sponsored" target="_blank"><span>{r.shop}</span>{r.p != null ? <b>{money(r.p)}{r.set ? <em>{r.set}</em> : null}</b> : <i>{r.note || 'check price'}</i>}</a>))}</div>
+</div>
+</article>
+))}
+</section>
+<section class="p"><a class="up arrow" href="/gift-guides/">More gift guides</a></section>
+</Base>

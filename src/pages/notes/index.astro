@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import HabitOfWeek from '../../components/HabitOfWeek.astro';
+const cards = [
+  ['Skin concerns','Gut health and skin: how your gut shows up on your skin barrier','/notes/gut-health-and-skin-barrier/'],
+  ['Glow foods','Foods for glowing skin: my food and supplements guide','/notes/foods-and-supplements-for-skin/'],
+  ['Skin concerns','Foods that cause breakouts: my hidden skin triggers','/notes/foods-that-cause-breakouts/'],
+  ['Habits','Gut health checklist: my daily habits for glowing skin','/notes/gut-health-checklist/'],
+  ['Glow foods','Best foods for skin: my grocery list for glowing skin','/notes/best-foods-for-skin/'],
+];
+---
+<Base title="Notes | Sundays with Anna" description="Advice, guides and small habits for healthy, glowing skin, without product reviews.">
+<section class="p" style="padding-top:56px;display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap"><div><h1 class="hd" style="margin:0;font-size:150px">Notes</h1><div class="hand" style="font-size:36px;transform:rotate(-2deg);margin-top:4px">things I wish I knew sooner</div></div><p style="margin:0 0 14px;max-width:340px;font-size:15px;color:#5C5C5C">Advice, guides and small habits for healthy skin. No product reviews here, just what I have learned.</p></section>
+<HabitOfWeek />
+<section class="p" style="padding-top:28px;display:flex;gap:8px;flex-wrap:wrap"><a class="pill on" href="#" data-f="all">All</a><a class="pill" href="#" data-f="Skin concerns">Skin concerns</a><a class="pill" href="#" data-f="Glow foods">Glow foods</a><a class="pill" href="#" data-f="Habits">Habits</a></section>
+<section class="p" style="padding-top:32px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px" id="notes-grid">
+{cards.map((c,i)=>(<a class="note-card" data-t={c[0]} href={c[2]}><div class="n-top"><span class="up">{String(i+1).padStart(2,'0')}</span><span class="up">{c[0]}</span></div><h3 class="hd">{c[1]}</h3><div class="n-foot"><span class="hand">read the note</span></div></a>))}
+</section>
+<style is:global>
+.s .note-card{display:flex;flex-direction:column;justify-content:space-between;min-height:300px;background:#F4F4F4;padding:26px}
+.s .note-card .n-top{display:flex;justify-content:space-between;color:#8A8A8A;font-size:12px}
+.s .note-card h3{font-size:30px;line-height:1.05;margin:40px 0 20px;color:#4A4A4A}
+.s .note-card .hand{font-size:28px}
+@media (max-width:900px){#notes-grid{grid-template-columns:1fr!important}.s .hd[style*="150px"]{font-size:80px!important}}
+</style>
+<script is:inline>
+document.querySelectorAll('.pill[data-f]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();document.querySelectorAll('.pill[data-f]').forEach(function(x){x.classList.remove('on')});b.classList.add('on');var f=b.dataset.f;document.querySelectorAll('#notes-grid>a').forEach(function(c){c.style.display=(f==='all'||c.dataset.t===f)?'':'none'})})});
+</script>
+</Base>

@@ -1,0 +1,14 @@
+---
+const { intro = '', items = [], also = '', img, alt = '', pos = '50% 50%' } = Astro.props;
+---
+<div class="pi">
+<div class="pi-p">{img ? <img src={img} alt={alt} style={`object-position:${pos}`} loading="lazy"> : <div class="ph" style="height:100%;min-height:inherit"><span>Product photo coming soon</span></div>}</div>
+<div class="pi-t">
+<div class="pi-v hand">what’s inside</div>
+<div class="pi-b">
+{intro && <p class="pi-i">{intro}</p>}
+{items.map((it: [string,string]) => (<div class="pi-it"><h3 class="hd">{it[0]}</h3><p>{it[1]}</p></div>))}
+{also && <p class="pi-also">also made with <b>{also}</b></p>}
+</div>
+</div>
+</div>

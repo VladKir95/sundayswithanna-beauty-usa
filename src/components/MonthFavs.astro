@@ -1,0 +1,54 @@
+---
+import { favs, month } from '../data/favs.mjs';
+const items = favs.map((f, i) => ({ ...f, n: String(i + 1).padStart(2, '0') }));
+---
+<section class="p sec mf-sec" id="favourites">
+  <div class="mf-head">
+    <div>
+      <h2 class="hd" style="margin:0;font-size:54px">Month’s favourites</h2>
+      <div class="hand mf-note">the ones I loved most this month</div>
+    </div>
+    <div class="up mf-month">{month}</div>
+  </div>
+  <div class="mf-grid">
+    {items.map(it => (
+      <article class="mf-card">
+        <div class="mf-top"><span>{it.n}</span><span class="mf-ic" aria-hidden="true">≡</span></div>
+        {it.img ? <div class="mf-img"><img src={it.img} alt={it.full} loading="lazy" /></div> : <div class="mf-img ph"><span>Product photo<br><em>{it.full}</em></span></div>}
+        <div class="mf-ns">
+          <div class="mf-brand">{it.brand}</div>
+          {it.review ? <a class="mf-name" href={it.review}>{it.name}</a> : <h3 class="mf-name">{it.name}</h3>}
+          <div class="mf-sub">{it.sub}</div>
+        </div>
+        <dl class="mf-rows">
+          <div class="mf-row"><dt>Full name</dt><dd>{it.full}</dd></div>
+          <div class="mf-row"><dt>Main ingredients</dt><dd>{it.ingredients}</dd></div>
+          <div class="mf-row"><dt>For these skin types</dt><dd>{it.skin}</dd></div>
+        </dl>
+      </article>
+    ))}
+  </div>
+</section>
+<style is:global>
+.s .mf-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.s .mf-note{font-size:34px;transform:rotate(-2deg);margin-top:10px;color:#C2517A}
+.s .mf-month{color:#8A8A8A}
+.s .mf-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.s .mf-card{background:#EDEDED;border-radius:18px;padding:22px 20px 12px;display:flex;flex-direction:column;min-width:0}
+.s .mf-top{display:flex;justify-content:space-between;font-family:'Inter Tight',sans-serif;font-size:16px;color:#111}
+.s .mf-ic{font-size:22px;line-height:1}
+.s .mf-img{aspect-ratio:1/1;margin:14px 0 18px;border-radius:12px;background:#E0E0E0;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px}
+.s .mf-img img{display:block;width:100%;height:100%;object-fit:cover;margin:-12px}
+.s .mf-img.ph span{font-family:'Inter Tight',sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8A8A8A}
+.s .mf-img.ph em{display:block;font-style:normal;text-transform:none;letter-spacing:0;font-size:13px;margin-top:6px}
+.s .mf-brand{font-family:'Inter Tight',sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8A8A8A}
+.s .mf-name{margin:4px 0 0;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:19px;line-height:1.2;color:#111;text-decoration:none;text-transform:none;letter-spacing:0}
+.s .mf-sub{margin-top:4px;font-family:'Inter Tight',sans-serif;font-size:13px;color:#6B6B6B}
+.s .mf-rows{margin:16px 0 0;border-top:1px solid #D4D4D4}
+.s .mf-row{padding:10px 0;border-bottom:1px solid #D4D4D4}
+.s .mf-row:last-child{border-bottom:0}
+.s .mf-row dt{font-family:'Inter Tight',sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A8A8A;margin:0 0 3px}
+.s .mf-row dd{margin:0;font-family:'Inter Tight',sans-serif;font-size:14px;line-height:1.4;color:#111}
+@media(max-width:1100px){.s .mf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.s .mf-grid{grid-template-columns:minmax(0,1fr)}.s .mf-note{font-size:28px}}
+</style>

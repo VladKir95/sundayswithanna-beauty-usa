@@ -1,0 +1,24 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { actives, activeBySlug, goalBySlug } from '../../../data/guide';
+import { swatch } from '../../../data/swatch';
+import Swatch from '../../../components/Swatch.astro';
+export function getStaticPaths(){ return actives.map(a=>({params:{slug:a.slug},props:{a}})); }
+const { a } = Astro.props;
+const sw = swatch[a.slug];
+const dots=(s:string)=>s.startsWith('Medium to')?1:s.startsWith('Medium')?2:s.startsWith('Low to')?4:5;
+const word=(s:string)=>s.startsWith('Medium to')?'go slowly':s.startsWith('Medium')?'fairly gentle':s.startsWith('Low to')?'quite gentle':'very gentle';
+---
+<Base title={`${a.name}: what it does and how to use it | Sundays with Anna`} description={a.summary}>
+<section class="p" style="padding-top:28px"><div class="g-crumb"><a href="/">Home</a><span>/</span><a href="/skin-guide/">Skin guide</a><span>/</span><b>{a.name}</b></div>
+<div class="g-ihero"><div><div class="up" style="color:#8A8A8A">Ingredient</div><h1 class="hd g-h1s" style="margin:8px 0 14px">{a.name}</h1><p class="serif g-lead">{a.summary}</p><div class="hand" style="transform:rotate(-2deg);font-size:34px;margin-top:6px">{a.tags[0]}, mostly</div></div>
+<div class="g-spec"><div class="top"><span>{a.name}</span><span>Ingredient guide</span></div>
+<div class="rows"><div class="hd2"><span>Ingredient</span><span>Function</span></div>{sw.funcs.map(f=>(<div class="r"><b>{f[0]}</b><span>{f[1]}</span></div>))}</div></div></div>
+<div class="g-three"><div><div class="g-lab">Great for</div><p>{a.bestFor}</p></div><div><div class="g-lab">Also called</div><p>{a.includes.join(', ')}</p></div><div><div class="g-lab">Go slowly if</div><p>{a.careful}</p></div></div>
+<div class="g-howbox"><div class="g-lab">How I'd use it</div><p class="serif">{a.how}</p><div class="g-meta"><span>Works at: {a.range}</span><span class="g-gentle"><span class="g-dots">{[1,2,3,4,5].map(n=>(<i class={n<=dots(a.irritation)?'on':''}></i>))}</span>{word(a.irritation)}</span></div><div class="g-tags" style="margin-top:14px">{a.tags.join(' / ')}</div></div>
+{a.anna&&(<div class="g-anna"><div class="up" style="color:#8A8A8A">From my shelf</div><p class="serif">{a.anna.text}</p><a href={a.anna.href}>{a.anna.label} →</a><div class="hand" style="transform:rotate(-2deg);margin-top:8px">my own experience</div></div>)}
+<h2 class="hd g-h2s">Not sure which one?</h2><div class="g-cmp">{a.compare.map(c=>(<a href={`/skin-guide/actives/${c.slug}/`}><b>{activeBySlug[c.slug].name}</b><span>{c.note}</span></a>))}</div>
+<h2 class="hd g-h2s">Where it helps</h2><div class="g-cmp">{a.goals.map(s=>(<a href={`/skin-guide/${s}/`}><b>{goalBySlug[s].name}</b><span>{goalBySlug[s].short}</span></a>))}</div>
+<h2 class="hd g-h2s">Goes well with</h2><div class="g-cmp three">{a.related.map(s=>(<a href={`/skin-guide/actives/${s}/`}><b>{activeBySlug[s].name}</b><span>{activeBySlug[s].summary}</span></a>))}</div>
+<p class="g-disc">General information, not medical advice. If you are pregnant, breastfeeding, or have a skin condition, ask your doctor before adding a new active.</p></section>
+</Base>

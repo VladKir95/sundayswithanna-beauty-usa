@@ -1,0 +1,30 @@
+---
+import '../styles/global.css';
+import UvFab from '../components/UvFab.astro';
+const { title = 'Sundays with Anna', description = 'Honest beauty and skincare reviews from my own skin, every Sunday.' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+<meta name="description" content={description}>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..500;1,6..72,400..500&family=Reenie+Beanie&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="s">
+
+<div class="top"><nav><a href="/">Home</a><a href="/beauty/">Beauty</a><a href="/skin-guide/">Skin guide</a><a href="/notes/">Notes</a><a href="/shop/">Shop</a></nav><a class="logo" href="/"><b>sundays</b><i>with anna</i></a><nav class="r"><a href="/about/">About</a><a href="https://www.instagram.com/sundayswithanna/" rel="noopener" target="_blank">Instagram</a><a href="#letter">Sunday letter</a></nav></div>
+<main><slot /></main>
+
+<footer id="letter"><div><h4>Join the Sunday letter</h4><form onsubmit="return false" style="display:flex;gap:8px;margin-bottom:18px"><input type="email" placeholder="Email" aria-label="Email" style="flex:1;min-width:0;border:0;border-bottom:1px solid #8A8A8A;background:transparent;padding:6px 0;font:inherit;outline:0"><button type="button" style="border:0;background:#4A4A4A;color:#fff;padding:6px 16px;font:600 12px 'Inter Tight',sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">Join</button></form><div style="color:#6A6A6A;max-width:230px">One honest recommendation in your inbox every Sunday, with tips and tested picks from me.</div></div>
+<div><h4>Navigate</h4><a href="/beauty/">Beauty</a><a href="/skin-guide/">Skin guide</a><a href="/uv/">UV index today</a><a href="/shop/">Shop my picks</a><a href="/beauty/morning-skincare-routine-dry-skin-winter/">My routine</a><a href="/notes/">Notes</a><a href="/about/">About Anna</a></div>
+<div><h4>Official</h4><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/affiliate-disclosure/">Affiliate disclosure</a><a href="/contact/">Contact</a></div>
+<div style="text-align:right"><h4>Follow</h4><a href="https://www.instagram.com/sundayswithanna/" rel="noopener" target="_blank">Instagram</a></div></footer>
+<UvFab />
+</div>
+</body>
+</html>

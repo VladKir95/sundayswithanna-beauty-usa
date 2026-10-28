@@ -1,0 +1,22 @@
+---
+import { habits } from '../data/habits.mjs';
+---
+<section class="p hw-wrap"><div class="hw" id="habit" data-habits={JSON.stringify(habits)}>
+<div class="hw-l"><div class="up hw-k">Habit of the week</div><div class="hw-num">Week <span id="hw-wk">1</span></div><div class="hand hw-hand">one small thing at a time</div></div>
+<div class="hw-r"><h2 class="hd hw-t" id="hw-t">{habits[0].title}</h2><p id="hw-why">{habits[0].why}</p><div class="up hw-lbl">Try this week:</div><p id="hw-step">{habits[0].step}</p></div>
+</div></section>
+<script is:inline>
+(function(){
+  var el=document.getElementById('habit'); if(!el) return;
+  try{
+    var list=JSON.parse(el.getAttribute('data-habits')); if(!list.length) return;
+    var d=new Date(), start=new Date(d.getFullYear(),0,1);
+    var wk=Math.floor(((d-start)/86400000+start.getDay())/7)+1;
+    var h=list[(wk-1)%list.length];
+    document.getElementById('hw-wk').textContent=wk;
+    document.getElementById('hw-t').textContent=h.title;
+    document.getElementById('hw-why').textContent=h.why;
+    document.getElementById('hw-step').textContent=h.step;
+  }catch(e){}
+})();
+</script>

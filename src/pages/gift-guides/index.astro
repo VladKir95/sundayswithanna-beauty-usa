@@ -1,0 +1,16 @@
+---
+import Base from '../../layouts/Base.astro';
+import { guides, itemsFor } from '../../data/giftGuides.mjs';
+const list = guides.map(g => ({ ...g, count: g.live ? itemsFor(g).length : 0 }));
+---
+<Base title="Gift guides | Sundays with Anna" description="Curated skincare gift guides: under $15, for the sunscreen lover, a self-care night in and more.">
+<section class="p gg-top"><div class="up" style="color:#8A8A8A">Shop</div><h1 class="hd gg-h1">Gift guides</h1><div class="hand gg-hand">little things worth giving</div><p class="gg-lead">Themed lists from the products I use and love, with the current price in each shop. Pick a theme and find something for her (or for you).</p></section>
+<section class="p gg-grid">
+{list.map((g, i) => g.live ? (
+<a class="gg-card" href={'/gift-guides/' + g.slug + '/'}><div class="gg-ctop"><span class="up">{String(i + 1).padStart(2, '0')}</span><span class="up">{g.tag}</span></div><h2 class="hd">{g.title}</h2><p>{g.blurb}</p><div class="gg-cfoot"><span class="hand">see the picks</span><i>{g.count} {g.count === 1 ? 'pick' : 'picks'}</i></div></a>
+) : (
+<div class="gg-card gg-soon"><div class="gg-ctop"><span class="up">{String(i + 1).padStart(2, '0')}</span><span class="up">Soon</span></div><h2 class="hd">{g.title}</h2><p>{g.blurb}</p><div class="gg-cfoot"><span class="hand">coming soon</span></div></div>
+))}
+</section>
+<section class="p"><p class="gg-fine"><a class="up arrow" href="/shop/">Back to the shop</a></p></section>
+</Base>
