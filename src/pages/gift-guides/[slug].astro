@@ -7,7 +7,7 @@ const items = itemsFor(g);
 const money = (n) => '$' + n.toFixed(2);
 ---
 <Base title={g.title + ' | Sundays with Anna'} description={g.blurb}>
-<section class="p gg-top"><a class="up arrow" href="/gift-guides/">All gift guides</a><h1 class="hd gg-h1" style="margin-top:18px">{g.title}</h1><p class="gg-lead">{g.blurb}</p><p class="gg-fine">Prices were checked in October 2026 and change often. Sets and bundles are marked and are not counted in the “from” price. Some links may be affiliate links, see my <a href="/affiliate-disclosure/" style="text-decoration:underline">affiliate disclosure</a>.</p></section>
+<section class="p gg-top"><a class="up arrow" href="/gift-guides/">All gift guides</a><h1 class="hd gg-h1" style="margin-top:18px">{g.title}</h1><p class="gg-lead">{g.blurb}</p><p class="gg-fine">Prices were checked in October 2026 and change often. Sets and bundles are marked and are not counted in the “from” price.</p></section>
 <section class="p gg-list">
 {items.map((it, i) => (
 <article class="gg-item">
