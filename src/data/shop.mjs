@@ -58,6 +58,8 @@ const skincare = [
    y:{p:14.04,q:'beauty of joseon relief sun'}, o:{p:14.99,q:'beauty of joseon relief sun'}, a:{p:null,note:'check the seller'} }),
  item({ name:'SKIN1004 Madagascar Centella Hyalu-Cica Water-Fit Sun Serum', img:'/img/shop/skin1004-hyalu-cica-sun-serum.webp', sub:'50 ml, SPF 50', review:'/beauty/round-lab-birch-juice-sunscreen-review/', q:'skin1004 hyalu-cica water-fit sun serum',
    y:{p:11.64,q:'skin1004 hyalu-cica sun serum'}, o:{p:null}, a:{p:17.39,u:dp('B0FXH5LHN8')} }),
+ item({ name:'SKIN1004 Madagascar Centella Hyalu-Cica Silky-Fit Sun Stick', img:'/img/shop/skin1004-hyalu-cica-sun-stick.webp', sub:'20 g, SPF 50+', q:'skin1004 hyalu-cica silky-fit sun stick',
+   o:{p:null}, a:{p:null,note:'check the seller'} }),
 ]},
 { title:'Serum, pads and cleansing', tag:'Glow', note:'Skincare I keep coming back to', items:[
  item({ name:'Axis-Y Dark Spot Correcting Glow Serum', img:'/img/shop/axis-y-dark-spot-glow-serum.webp', sub:'50 ml, 5% niacinamide', review:'/beauty/axis-y-dark-spot-correcting-glow-serum-review/', q:'axis-y dark spot correcting glow serum',

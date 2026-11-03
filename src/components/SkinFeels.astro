@@ -1,9 +1,9 @@
 ---
 const states = [
-  { id: 'tight', word: 'tight.', go: 'Hydrating serum, then a ceramide cream', note: 'press it in, don’t rub', why: 'A lightweight hyaluronic acid serum on damp skin, sealed with a barrier cream, helps skin feel comfortable instead of tight.', look: 'Hyaluronic acid, glycerin, ceramides, panthenol', href: '/skin-guide/dry-and-tight-skin/' },
-  { id: 'dull', word: 'dull.', go: 'Gentle exfoliation and vitamin C', note: 'glow comes from routine', why: 'A mild acid once or twice a week and a vitamin C in the morning help skin look fresher, as long as sunscreen follows every day.', look: 'Lactic acid, PHA, vitamin C, niacinamide', href: '/skin-guide/even-skin-tone/' },
-  { id: 'oily', word: 'oily.', go: 'Gel cleanser and a light gel moisturizer', note: 'don’t skip moisturizer', why: 'Oily skin still needs water. A light moisturizer and niacinamide keep shine and visible pores in check without stripping.', look: 'Niacinamide, salicylic acid, zinc, light gels', href: '/skin-guide/acne-and-pores/' },
-  { id: 'irritated', word: 'irritated.', go: 'Pause the actives, keep it simple', note: 'less is more here', why: 'When skin stings or looks red, cleanser, moisturizer and sunscreen are enough for a while, so the barrier can settle.', look: 'Centella, panthenol, ceramides, fragrance-free', href: '/skin-guide/sensitivity-and-redness/' },
+  { id: 'tight', img: '/img/skin-feels.webp', alt: 'My bathroom sink with my favourite skincare, a sheet mask and an iPad', word: 'tight.', go: 'Hydrating serum, then a ceramide cream', note: 'press it in, don’t rub', why: 'A lightweight hyaluronic acid serum on damp skin, sealed with a barrier cream, helps skin feel comfortable instead of tight.', look: 'Hyaluronic acid, glycerin, ceramides, panthenol', href: '/skin-guide/dry-and-tight-skin/' },
+  { id: 'dull', img: '/img/skin-feels-dull.webp', alt: 'My sink with yellow, brightening skincare, a vitamin C sheet mask and an iPad', word: 'dull.', go: 'Gentle exfoliation and vitamin C', note: 'glow comes from routine', why: 'A mild acid once or twice a week and a vitamin C in the morning help skin look fresher, as long as sunscreen follows every day.', look: 'Lactic acid, PHA, vitamin C, niacinamide', href: '/skin-guide/even-skin-tone/' },
+  { id: 'oily', img: '/img/skin-feels-oily.webp', alt: 'My sink with green, balancing skincare, a sheet mask and an iPad', word: 'oily.', go: 'Gel cleanser and a light gel moisturizer', note: 'don’t skip moisturizer', why: 'Oily skin still needs water. A light moisturizer and niacinamide keep shine and visible pores in check without stripping.', look: 'Niacinamide, salicylic acid, zinc, light gels', href: '/skin-guide/acne-and-pores/' },
+  { id: 'irritated', img: '/img/skin-feels-irritated.webp', alt: 'My sink with blue, calming skincare, eye patches and an iPad', word: 'irritated.', go: 'Pause the actives, keep it simple', note: 'less is more here', why: 'When skin stings or looks red, cleanser, moisturizer and sunscreen are enough for a while, so the barrier can settle.', look: 'Centella, panthenol, ceramides, fragrance-free', href: '/skin-guide/sensitivity-and-redness/' },
 ];
 ---
 <section class="p sec"><div class="sf" id="skinfeels">
@@ -24,16 +24,17 @@ const states = [
 </div></div>
 ))}
 </div>
-<div class="sf-img"><img src="/img/skin-feels.webp" alt="My bathroom sink with my favourite skincare, a sheet mask and an iPad" loading="lazy" /></div>
+<div class="sf-img">{states.map((s, i) => (<img class="sf-pic" data-i={i} src={s.img} alt={s.alt} loading="lazy" hidden={i !== 0} />))}</div>
 </div></section>
 <script is:inline>
 (function(){
   var root=document.getElementById('skinfeels'); if(!root) return;
-  var tabs=root.querySelectorAll('.sf-tab'), panels=root.querySelectorAll('.sf-panel');
+  var tabs=root.querySelectorAll('.sf-tab'), panels=root.querySelectorAll('.sf-panel'), pics=root.querySelectorAll('.sf-pic');
   tabs.forEach(function(t){ t.addEventListener('click',function(){
     var i=t.getAttribute('data-i');
     tabs.forEach(function(x){ var on=x===t; x.classList.toggle('on',on); x.setAttribute('aria-pressed',on?'true':'false'); });
     panels.forEach(function(p){ p.hidden = p.getAttribute('data-i')!==i; });
+    pics.forEach(function(p){ p.hidden = p.getAttribute('data-i')!==i; });
   }); });
 })();
 </script>

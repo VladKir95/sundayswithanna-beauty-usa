@@ -1,0 +1,16 @@
+---
+const { name } = Astro.props;
+const icons = {
+  apple: '<path d="M32 20c-5-4-16-3-16 12 0 12 8 22 14 22 1 0 1-.5 2-.5s1 .5 2 .5c6 0 14-10 14-22 0-15-11-16-16-12Z"/><path d="M32 20c0-5 1-9 4-12"/><path d="M35 13c4-3 9-2 11 0-2 4-8 5-11 0Z"/>',
+  kiwi: '<circle cx="32" cy="32" r="22"/><circle cx="32" cy="32" r="16"/><ellipse cx="32" cy="32" rx="5" ry="6"/><path d="M32 20v-4M32 48v-4M20 32h-4M48 32h-4M23.5 23.5l-2.8-2.8M43.3 43.3l-2.8-2.8M40.5 23.5l2.8-2.8M20.7 43.3l2.8-2.8"/>',
+  spinach: '<path d="M32 56C14 50 10 28 32 8c22 20 18 42 0 48Z"/><path d="M32 12v46"/><path d="M32 26l-9-7M32 36l-12-9M32 46l-9-7M32 26l9-7M32 36l12-9M32 46l9-7"/>',
+  pineapple: '<ellipse cx="32" cy="41" rx="13" ry="17"/><path d="M22 33l20 20M20 43l14 14M42 33 22 53M44 43 30 57M26 26l20 22"/><path d="M32 24c-4-6-5-11-3-16 3 4 4 8 3 12 1-5 4-9 9-10-2 6-4 10-9 14Z"/>',
+  banana: '<path d="M12 18c2 26 24 36 42 20-3 1-6 1-9-1C32 36 26 26 26 14Z"/><path d="M12 18l14-4"/><path d="M30 38c6 6 12 8 16 7"/>',
+  lime: '<circle cx="32" cy="32" r="22"/><circle cx="32" cy="32" r="17"/><path d="M32 15v34M15 32h34M20 20l24 24M44 20 20 44"/>',
+  water: '<path d="M32 8C32 8 16 28 16 40a16 16 0 0 0 32 0C48 28 32 8 32 8Z"/><path d="M24 40c0 5 3 9 7 10"/>',
+};
+---
+<svg class="ing-line" viewBox="0 0 64 64" fill="none" stroke="#B0475E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[name]}></svg>
+<style is:global>
+.s .ing-line{display:block;width:100%;height:100%}
+</style>

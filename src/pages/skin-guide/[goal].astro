@@ -1,17 +1,28 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { goals, activeBySlug } from '../../data/guide';
+import { slugOf, categories } from '../../data/shop.mjs';
 export function getStaticPaths(){ return goals.map(g=>({params:{goal:g.slug},props:{g}})); }
 const { g } = Astro.props;
 const dots=(s:string)=>s.startsWith('Medium to')?1:s.startsWith('Medium')?2:s.startsWith('Low to')?4:5;
 const word=(s:string)=>s.startsWith('Medium to')?'go slowly':s.startsWith('Medium')?'fairly gentle':s.startsWith('Low to')?'quite gentle':'very gentle';
-const first=g.shelf[0];
+const TAG:Record<string,string>={'anti-aging':'firming','acne-and-pores':'pores','even-skin-tone':'glow','sensitivity-and-redness':'soothing','barrier-repair':'hydration','sun-protection':'sun'};
+const tag=TAG[g.slug]||'';
+const MORE:Record<string,string[]>={
+'acne-and-pores':['numbuzin Zero Blemish Azela Cica Balancing Dual Pads','glow Diamond Drop Blemish Patch','medicube Zero Pore Blackhead Mud Mask','Beauty of Joseon Green Plum Refreshing Toner: AHA + BHA','numbuzin Zero Blemish 3X Spot Correcting Cream'],
+'anti-aging':['ROUND LAB Camellia Deep Collagen Firming Ampoule','VT Reedle Shot 100','Biodance Bio-Collagen Real Deep Mask (pink)','haruharu wonder Black Rice Bakuchiol Eye Cream','ROUND LAB Camellia Deep Collagen Firming Cream','medicube PDRN Pink Peptide Eye Cream'],
+'even-skin-tone':['Axis-Y Dark Spot Correcting Glow Serum','AXIS-Y Dark Spot Correcting Glow Toner','ROUND LAB Vita Niacinamide Dark Spot Serum','medicube Deep Vita C Capsule Cream','AXIS-Y TXA 2.5% Intensive Brightening Cream'],
+'sensitivity-and-redness':['ROUND LAB Pine Calming Cica Ampoule','TIRTIR Matcha Calming Cream','iUNIK Centella Relief Sorbet Cream','haruharu wonder Rose PDRN Soothing Serum','ROUND LAB Pine Calming Cica Cream Plus','SKIN1004 Madagascar Centella Quick Calming Pad'],
+'barrier-repair':['haruharu wonder Black Rice 5 Ceramide Barrier Moisturizing Cream','iUNIK Beta-Glucan 3X Barrier Cream','skit B5 Barrier Cream','LANEIGE Water Bank Blue Hyaluronic Moisture Cream','iUNIK Beta-Glucan Lacto Barrier Milk Essence','ROUND LAB Soybean Panthenol Cream'],
+'sun-protection':['Round Lab Birch Juice Moisturizing Sunscreen','Beauty of Joseon Relief Sun: Rice + Probiotics','Beauty of Joseon Relief Sun Aqua-Fresh: Rice + B5','SKIN1004 Madagascar Centella Hyalu-Cica Water-Fit Sun Serum','SKIN1004 Madagascar Centella Hyalu-Cica Silky-Fit Sun Stick']};
+const shopImg=Object.fromEntries(categories.flatMap(c=>c.groups.flatMap(x=>x.items.map(i=>[i.name,i.img]))));
+const shelf=[...g.shelf,...(MORE[g.slug]||[]).slice(0,Math.max(0,6-g.shelf.length)).map(n=>({name:n,note:'',href:`/shop/?concern=${tag}#${slugOf(n)}`,img:(shopImg[n]||`/img/shop/${slugOf(n)}.webp`).replace(/^\/img\//,''),pos:'50% 50%'}))];
 const rot=['-2deg','2deg','-1.5deg'];
 ---
 <Base title={`${g.name} skin guide: routine and key ingredients | Sundays with Anna`} description={g.summary}>
 <section class="p" style="padding-top:28px"><div class="g-crumb"><a href="/skin-guide/">Skin guide</a><span>/</span><b>{g.name}</b></div>
 <div class="g-hero"><div><div class="up" style="color:#8A8A8A">My playbook</div><h1 class="hd g-h1s" style="margin-top:8px">{g.name}</h1><p class="serif g-lead" style="margin-top:18px">{g.summary}</p><div class="hand" style="transform:rotate(-2deg);font-size:36px;margin-top:6px">{g.hand}</div></div>
-<a href={first.href} class="pol" style="transform:rotate(2deg);max-width:340px;justify-self:center"><div class="tp"></div><div class="ph" style="height:340px"><img src={`/img/${first.img}`} alt={first.name} style={`object-position:${first.pos||'50% 50%'}`}></div><div class="cap">{first.name}</div></a></div>
+<a class="bf" href={`/shop/?concern=${tag}#shp-filt`}><div class="bf-k">Best finds</div><div class="bf-t">For {g.name.toLowerCase()}</div><div class="hand bf-h">picked for this skin concern</div><ul class="bf-l">{shelf.slice(0,3).map(p=>(<li>{p.name}</li>))}<li class="bf-m">and more in my shop</li></ul><span class="bf-b">See them in my shop <i>→</i></span></a></div>
 <div class="g-two"><div class="g-box"><div class="g-lab">Sound like you?</div><ul class="g-lst">{g.forYou.map(x=>(<li>{x}</li>))}</ul></div>
 <div class="g-box" style="background:#EDEDED"><div class="g-lab">What I wish I knew sooner</div><ul class="g-lst">{g.keep.map(x=>(<li>{x}</li>))}</ul></div></div></section>
 
@@ -24,9 +35,21 @@ const rot=['-2deg','2deg','-1.5deg'];
 <div class="g-cards">{g.actives.map(s=>{const a=activeBySlug[s];return (<a class="g-card" href={`/skin-guide/actives/${a.slug}/`}><b>{a.name}</b><div class="g-also">Also called: {a.includes.join(', ').toLowerCase()}</div><p>{a.summary}</p><div class="g-tags">{a.tags.join(' / ')}</div><div class="g-meta">Works at: {a.range}</div><div class="g-gentle"><span class="g-dots">{[1,2,3,4,5].map(n=>(<i class={n<=dots(a.irritation)?'on':''}></i>))}</span>{word(a.irritation)}</div><em class="g-more">Read more</em></a>)})}</div></section>
 
 <section class="p sec"><div class="up" style="color:#8A8A8A;margin-bottom:12px">From my bathroom shelf</div><h2 class="hd g-h2">What's on my shelf for this</h2>
-<div class="g-shelf">{g.shelf.map((p,i)=>(<a class="pol" href={p.href} style={`transform:rotate(${rot[i%3]})`}><div class="tp"></div><div class="ph" style="height:320px"><img src={`/img/${p.img}`} alt={p.name} style={`object-position:${p.pos||'50% 50%'}`}></div><div class="cap">{p.name}</div></a>))}</div>
-<div class="g-shelf" style="margin-top:6px">{g.shelf.map(p=>(<p class="serif" style="margin:0;font-size:18px;color:#4A4A4A">{p.note}</p>))}</div></section>
+<div class="g-shelf">{shelf.map((p,i)=>(<a class="pol" href={p.href} style={`transform:rotate(${rot[i%3]})`}><div class="tp"></div><div class="ph" style="height:320px"><img src={`/img/${p.img}`} alt={p.name} style={`object-position:${p.pos||'50% 50%'}`}></div><div class="cap">{p.name}</div></a>))}</div>
+<div class="g-shelf" style="margin-top:6px">{shelf.map(p=>(<p class="serif" style="margin:0;font-size:18px;color:#4A4A4A">{p.note}</p>))}</div></section>
 
 <section class="p sec"><h2 class="hd g-h2">Keep reading</h2><div class="g-links">{g.readNext.map(r=>(<a href={r.href}>{r.title}<span>→</span></a>))}<a href="/skin-guide/">All skin goals<span>→</span></a></div>
 <p class="g-disc">This is general information from my own experience and reading, not medical advice. If your skin is painful, very irritated or not improving, please see a dermatologist.</p></section>
 </Base>
+
+<style>
+.bf{display:block;background:#F7F7F7;border-radius:18px;padding:30px 32px;text-decoration:none;color:inherit;max-width:380px;justify-self:center;width:100%;transition:background .2s}
+.bf:hover{background:#EDEDED}
+.bf-k{font:800 13px/1 'Inter Tight',sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#8F2E47;background:#F2C6D3;display:inline-block;padding:6px 10px;border-radius:6px}
+.bf-t{font:800 28px/1.1 'Inter Tight',sans-serif;text-transform:uppercase;color:#8A8A8A;margin-top:16px}
+.bf-h{font-size:30px;color:#C2517A;transform:rotate(-2deg);margin:6px 0 10px}
+.bf-l{list-style:none;margin:0 0 20px;padding:0;font-family:Newsreader,serif;font-size:19px;color:#4A4A4A}
+.bf-l li{padding:9px 0;border-top:1px solid #E2E2E2}
+.bf-m{color:#8A8A8A;font-style:italic}
+.bf-b{display:inline-block;background:#B0475E;color:#fff;font:700 14px 'Inter Tight',sans-serif;text-transform:uppercase;letter-spacing:.06em;padding:12px 18px;border-radius:999px}
+</style>

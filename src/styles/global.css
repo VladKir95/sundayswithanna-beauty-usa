@@ -309,6 +309,7 @@ a{color:inherit;text-decoration:none}
 .s .sf-more{display:inline-block;margin-top:18px}
 .s .sf-img{min-height:620px;border-radius:0}
 .s .sf-img{position:relative;overflow:hidden}.s .sf-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block}
+.s .sf-img img[hidden]{display:none}
 @media(max-width:900px){.s .sf{grid-template-columns:1fr}.s .sf-text{padding:28px 22px;min-height:0}.s .sf-img{min-height:360px}.s .sf-word{font-size:clamp(48px,16vw,96px)}}
 
 /* Sunday reset (beauty) */

@@ -108,7 +108,8 @@ function apply(){
 function goHash(){var id=decodeURIComponent((location.hash||'').slice(1));if(!id||id==='top')return;var el=document.getElementById(id);if(!el||!el.classList.contains('shp-card'))return;var s=el.closest('.shp-sec');if(s&&s._cards){s._open=true;}apply();el.hidden=false;setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('shp-hit');setTimeout(function(){el.classList.remove('shp-hit');},3000);},120);}
 q.addEventListener('input',apply);br.addEventListener('change',apply);
 chips.forEach(function(c){c.addEventListener('click',function(){tag=c.dataset.tag;chips.forEach(function(x){x.classList.toggle('on',x===c);});apply();});});
-apply();goHash();window.addEventListener('hashchange',goHash);
+try{var cn=new URLSearchParams(location.search).get('concern');if(cn){chips.forEach(function(x){if(x.dataset.tag===cn){tag=cn;chips.forEach(function(y){y.classList.toggle('on',y===x);});}});}}catch(e){}
+apply();goHash();if(tag&&!location.hash.replace('#','')){var f=document.getElementById('shp-filt');if(f)setTimeout(function(){f.scrollIntoView({block:'start'});},50);}window.addEventListener('hashchange',goHash);
 })();
 </script>
 <script is:inline>

@@ -1,0 +1,28 @@
+---
+import IngredientIcon from './IngredientIcon.astro';
+// variant "a": typographic cards. variant "b": same cards with a thin pink line icon.
+const { items, variant = 'a' } = Astro.props;
+
+---
+<div class={`ic ic-${variant}`}>
+{items.map((it, i) => (
+  <div class="ic-card">
+    <div class="ic-top"><span class="up">{String(i + 1).padStart(2, '0')}</span><span class="up">{it.tag}</span></div>
+    {variant === 'b' && (<div class="ic-svg"><IngredientIcon name={it.id} /></div>)}
+    <div class="ic-name">{it.name}</div>
+    <div class="hand ic-note">{it.note}</div>
+  </div>
+))}
+</div>
+<style is:global>
+.s .ic{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.s .ic-card{background:#F7F7F7;padding:22px 22px 20px;min-height:230px;display:flex;flex-direction:column}
+.s .ic-top{display:flex;justify-content:space-between;color:#8A8A8A;font-size:12px}
+.s .ic-svg{width:56px;height:56px;margin:26px 0 0}
+.s .ic-a .ic-name{margin-top:54px}
+.s .ic-b .ic-name{margin-top:18px}
+.s .ic-name{font:800 26px/1.05 'Inter Tight',sans-serif;text-transform:uppercase;color:#6A6A6A}
+.s .ic-note{font-size:28px;margin-top:auto;padding-top:12px;transform:rotate(-2deg);transform-origin:left}
+@media (max-width:1100px){.s .ic{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:700px){.s .ic{grid-template-columns:repeat(2,minmax(0,1fr))}.s .ic-card{min-height:190px}.s .ic-name{font-size:22px}}
+</style>

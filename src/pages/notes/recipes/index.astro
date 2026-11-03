@@ -1,0 +1,32 @@
+---
+import Base from '../../../layouts/Base.astro';
+const recipes = [
+  { type: 'Smoothies', title: 'Green Glow Smoothie', sub: 'Green apple, kiwi, spinach, banana, frozen pineapple and lime', href: '/notes/recipes/green-glow-smoothie/', img: '/img/recipes/green-glow-smoothie.webp', alt: 'A blender jar with green apple, kiwi and spinach' },
+];
+---
+<Base title="Recipes | Sundays with Anna" description="Simple breakfasts, lunches and smoothies, with what each ingredient does for your skin, gut and general health.">
+<section class="p" style="padding-top:56px;display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap"><div><a class="up arrow" href="/notes/" style="color:#8A8A8A">Notes</a><h1 class="hd rcx-h1" style="margin:10px 0 0">Recipes</h1><div class="hand" style="font-size:36px;transform:rotate(-2deg);margin-top:4px">simple, fresh and good for your skin</div></div><p style="margin:0 0 14px;max-width:360px;font-size:15px;color:#5C5C5C">Breakfasts, lunches and smoothies, each with a look at what every ingredient brings for your skin, gut and health.</p></section>
+<section class="p" style="padding-top:28px;display:flex;gap:8px;flex-wrap:wrap" id="rcx-pills"><a class="pill on" href="#" data-f="all">All</a><a class="pill" href="#" data-f="Breakfasts">Breakfasts</a><a class="pill" href="#" data-f="Lunches">Lunches</a><a class="pill" href="#" data-f="Smoothies">Smoothies</a></section>
+<section class="p" style="padding-top:32px"><div class="rcx-grid" id="rcx-grid">
+{recipes.map((r)=>(<a class="rcx-card" data-t={r.type} href={r.href}><div class="rcx-img"><img src={r.img} alt={r.alt} loading="lazy" /></div><div class="up rcx-k">{r.type}</div><h3 class="hd rcx-t">{r.title}</h3><p class="rcx-s">{r.sub}</p><span class="hand rcx-h">see the recipe</span></a>))}
+<div class="rcx-soon" id="rcx-empty" hidden><div class="hand">more recipes coming soon</div></div>
+</div></section>
+<script is:inline>
+(function(){var pills=document.querySelectorAll('#rcx-pills .pill'),cards=document.querySelectorAll('.rcx-card'),empty=document.getElementById('rcx-empty');
+pills.forEach(function(p){p.addEventListener('click',function(e){e.preventDefault();var f=p.getAttribute('data-f'),n=0;pills.forEach(function(x){x.classList.toggle('on',x===p)});cards.forEach(function(c){var ok=f==='all'||c.getAttribute('data-t')===f;c.hidden=!ok;if(ok)n++});empty.hidden=n>0;});});})();
+</script>
+</Base>
+<style is:global>
+.s .rcx-h1{font-size:clamp(64px,10vw,150px)}
+.s .rcx-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.s .rcx-card{display:block;background:#F7F7F7;padding:0 0 24px}
+.s .rcx-card[hidden]{display:none}
+.s .rcx-img{aspect-ratio:4/5;overflow:hidden;background:#EDEDED}
+.s .rcx-img img{width:100%;height:100%;object-fit:cover;display:block}
+.s .rcx-k{color:#8A8A8A;font-size:12px;margin:18px 24px 0}
+.s .rcx-t{font-size:30px;line-height:1.05;margin:8px 24px 0;color:#4A4A4A}
+.s .rcx-s{margin:10px 24px 0;font-size:16px;color:#5C5C5C;line-height:1.5}
+.s .rcx-h{display:block;margin:14px 24px 0;font-size:28px}
+.s .rcx-soon{grid-column:1/-1;background:#F7F7F7;padding:40px;text-align:center;font-size:32px}
+@media (max-width:900px){.s .rcx-grid{grid-template-columns:1fr}}
+</style>

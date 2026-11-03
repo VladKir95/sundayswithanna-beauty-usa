@@ -1,0 +1,177 @@
+---
+import Base from '../../../layouts/Base.astro';
+import IngredientIcon from '../../../components/IngredientIcon.astro';
+import IngredientCards from '../../../components/IngredientCards.astro';
+import AuthorBox from '../../../components/AuthorBox.astro';
+import NewsletterCta from '../../../components/NewsletterCta.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+
+const title = 'Green Glow Smoothie: Kiwi, Spinach, Green Apple and Pineapple Recipe';
+const description = 'A simple green smoothie with green apple, kiwi, spinach, banana, frozen pineapple and lime. See what each ingredient brings for skin, gut and general health, and how to make it.';
+const url = '/notes/recipes/green-glow-smoothie/';
+
+const items = [
+  { id: 'apple', name: 'Green apple', tag: 'Gut', note: 'tart and fresh' },
+  { id: 'kiwi', name: 'Kiwi', tag: 'Skin · Gut', note: 'vitamin C' },
+  { id: 'spinach', name: 'Spinach', tag: 'Skin', note: 'mild greens' },
+  { id: 'pineapple', name: 'Frozen pineapple', tag: 'Skin', note: 'cold and thick' },
+  { id: 'banana', name: 'Banana', tag: 'Gut', note: 'creamy, naturally sweet' },
+  { id: 'lime', name: 'Lime juice', tag: 'Skin', note: 'a bright squeeze' },
+  { id: 'water', name: 'A splash of water', tag: 'Texture', note: 'just enough' },
+];
+
+const steps = [
+  ['Prep', 'Wash the apple and the spinach. Peel the kiwi, then chop the apple and kiwi into chunks. Squeeze the lime.'],
+  ['Load the blender', 'Add the spinach, apple, kiwi and banana, then the frozen pineapple. Pour in the lime juice and a small splash of water.'],
+  ['Blend', 'Blend until completely smooth. If it is too thick, add water a splash at a time. The frozen pineapple makes it cold and thick, so no ice is needed.'],
+  ['Taste and pour', 'Add a little more lime if you want it sharper. It tastes best fresh, straight after blending.'],
+];
+
+const what = [
+  { id: 'kiwi', name: 'Kiwi', tags: ['Skin', 'Gut', 'Health'], text: [
+    'Green kiwi is one of the richest everyday fruit sources of <strong>vitamin C</strong>: a medium fruit gives roughly 60 mg, which is about two thirds of the 90 mg daily value for adults. In skin, vitamin C works as an antioxidant and as a helper for the enzymes that stabilise collagen. A review of its role in skin health notes that intake raises skin levels only until blood levels are saturated, and that there are no studies directly linking food intake to visible skin ageing, so I see kiwi as good support, not a skin treatment.',
+    'For digestion, kiwi brings <strong>fibre</strong> and an enzyme called actinidin. Reviews and small trials suggest that a couple of kiwis a day may help with occasional constipation. It also adds vitamin K, folate and potassium.',
+  ]},
+  { id: 'spinach', name: 'Spinach', tags: ['Skin', 'Health'], text: [
+    'Spinach is a good source of <strong>folate, vitamin K and magnesium</strong>, plus carotenoids such as lutein and beta-carotene, the plant pigments that give leafy greens their colour. Once it is blended with fruit you hardly taste it, which is why it is the easiest way for me to get a handful of greens into a glass.',
+    'Spinach contains plant (non-heme) iron, which the body absorbs less easily than iron from meat. The vitamin C from the kiwi, pineapple and lime in this smoothie helps with that absorption, which is a nice reason for the combination.',
+  ]},
+  { id: 'apple', name: 'Green apple', tags: ['Gut', 'Health'], text: [
+    'Apples bring <strong>fibre</strong>, including pectin, a soluble fibre that gut bacteria ferment. Most of the polyphenols (plant antioxidants) sit in and just under the peel, so I wash the apple well and keep the peel on. The tart flavour balances the sweeter fruit, so the smoothie does not taste flat.',
+  ]},
+  { id: 'banana', name: 'Banana', tags: ['Gut', 'Health'], text: [
+    'Banana makes the texture creamy and sweetens the smoothie naturally, so no honey or syrup is needed. It adds <strong>potassium</strong> and vitamin B6, and a little fibre. Slightly under-ripe bananas also contain more resistant starch, another fibre-like carbohydrate that feeds gut bacteria.',
+  ]},
+  { id: 'pineapple', name: 'Frozen pineapple', tags: ['Skin', 'Gut'], text: [
+    'Pineapple adds <strong>vitamin C</strong> and manganese, a mineral that supports the body’s own antioxidant enzymes. It also contains bromelain, a protein-digesting enzyme. Most of the research is on stem extracts and in cells or animals, and the amount in the fruit is small, so I treat it as a bonus and not as a reason to drink it.',
+    'Using it frozen means you get a cold, thick, almost ice-cream texture without diluting the smoothie with ice.',
+  ]},
+  { id: 'lime', name: 'Lime juice', tags: ['Skin', 'Health'], text: [
+    'A squeeze of lime adds a little more <strong>vitamin C</strong>, brightens the flavour and helps the apple and banana stay fresh-looking. The acidity is mild in this amount, but as with any acidic drink it is a good idea to rinse your mouth with water afterwards to be kind to your tooth enamel.',
+  ]},
+  { id: 'water', name: 'Water', tags: ['Health'], text: [
+    'Just enough to help the blades move and to set the thickness you like. Use less for a spoonable bowl and more for a drink.',
+  ]},
+];
+
+const faq = [
+  ['Is a green smoothie good for your skin?', 'It can support healthy skin because it delivers vitamin C, carotenoids, folate and fibre from a variety of plants. A smoothie will not replace sunscreen, a gentle routine or medical treatment, and the evidence linking single foods to visible skin changes is limited, so I see it as a pleasant daily habit that adds plants to your day.'],
+  ['Is this smoothie good for your gut?', 'It contains fibre from apple, kiwi, spinach, banana and pineapple, and blending keeps the fibre in, unlike juicing. Variety of plants is generally linked with a more diverse gut microbiome, and this recipe has six different plant foods in one glass. If you have ongoing digestive symptoms, please talk to a doctor.'],
+  ['Can I make it ahead?', 'It tastes best fresh because the apple and banana darken and the texture thins out as it sits. If you need to, keep it in a closed jar in the fridge for a few hours and shake it before drinking.'],
+  ['Will it keep me full?', 'It is mostly fruit and greens, so it is light. To make it more filling, add a spoon of plain yogurt or protein powder and a spoon of chia, flax or nut butter for protein and healthy fat.'],
+  ['Who should be careful with this smoothie?', 'Spinach is high in oxalates, so people who are prone to kidney stones should check with their doctor. People who take warfarin should keep their vitamin K intake steady, and kiwi can cause reactions in people with latex or kiwi allergy.'],
+];
+
+const ingredients = ['1 green apple', '1 kiwi', 'a handful of spinach', 'a small splash of water', 'frozen pineapple', '1 banana', 'juice of 1 lime'];
+const recipeLd = {
+  '@context': 'https://schema.org', '@type': 'Recipe', name: 'Green Glow Smoothie', description,
+  image: ['/img/recipes/green-glow-smoothie.webp'], author: { '@type': 'Person', name: 'Anna' },
+  recipeCategory: 'Smoothie', recipeCuisine: 'Healthy', keywords: 'green smoothie, kiwi spinach smoothie, green apple smoothie, pineapple kiwi smoothie',
+  suitableForDiet: 'https://schema.org/VeganDiet', recipeIngredient: ingredients,
+  recipeInstructions: steps.map(([n, t]) => ({ '@type': 'HowToStep', name: n, text: t })),
+};
+---
+<Base title={title} description={description}>
+<ArticleSchema title={title} description={description} faq={faq} date="2026-11-02" />
+<script type="application/ld+json" set:html={JSON.stringify(recipeLd)}></script>
+<article class="rc">
+<section class="p" style="padding-top:28px"><a class="up arrow" href="/notes/recipes/" style="color:#8A8A8A">Back to recipes</a>
+<div class="rc-spread">
+  <div class="rc-photo"><img src="/img/recipes/green-glow-smoothie.webp" alt="A blender jar filled with chopped green apple, kiwi and spinach, with frozen pineapple, banana and lime ready on the counter"></div>
+  <div class="rc-intro">
+    <div class="up" style="color:#8A8A8A">Notes · Recipes · Smoothies</div>
+    <h1 class="hd rc-h1">Green Glow Smoothie</h1>
+    <div class="hand rc-hand">fresh, green and a little tart</div>
+    <p class="serif rc-lead">A simple blend of green apple, kiwi, spinach, banana, frozen pineapple and lime. It is full of vitamin C and fibre, tastes bright instead of “grassy”, and needs no added sugar. Below you will find how to make it and what each ingredient brings for your skin, your gut and your general health.</p>
+    <div class="rc-facts"><span>7 ingredients</span><span>Vegan</span><span>No added sugar</span><span>Dairy-free</span></div>
+    <a class="rc-jump up" href="#why">What each ingredient does ↓</a>
+  </div>
+</div>
+</section>
+
+<section class="p sec" id="ingredients"><div class="up" style="color:#8A8A8A;margin-bottom:10px">What goes in</div><h2 class="hd rc-h2">The ingredients</h2>
+<p class="serif rc-sub">Amounts depend on your blender and your taste, so start small and adjust as you go.</p>
+<IngredientCards items={items} variant="b" />
+</section>
+
+<section class="p sec"><div class="rc-cols">
+  <div><div class="up" style="color:#8A8A8A;margin-bottom:10px">How I make it</div><h2 class="hd rc-h2">Method</h2>
+  <ol class="rc-steps">{steps.map(([n,t],i)=>(<li><span class="rc-n">{i+1}</span><div><b>{n}</b><p>{t}</p></div></li>))}</ol></div>
+  <aside class="rc-note"><div class="up" style="color:#8F2E47">Good to know</div><p>This smoothie is mostly fruit, so it is light and fresh. If you want it to keep you full for longer, add a spoon of plain yogurt or protein powder and a spoon of chia, flax or nut butter.</p><div class="hand" style="font-size:30px;color:#C2517A;transform:rotate(-2deg)">drink it fresh</div></aside>
+</div></section>
+
+<section class="p sec" id="why"><div class="up" style="color:#8A8A8A;margin-bottom:10px">Why it is good for you</div><h2 class="hd rc-h2">What each ingredient does</h2>
+<p class="serif rc-sub">Three things I look at: skin, gut and general health. Here is what each ingredient brings, and where the evidence is solid and where it is thin.</p>
+<div class="rc-sum">
+  <div><div class="up">For skin</div><p>Vitamin C from kiwi, pineapple and lime, carotenoids and folate from spinach. Vitamin C is needed to build collagen and helps protect skin from oxidative stress.</p></div>
+  <div><div class="up">For gut</div><p>Fibre from five different fruits and greens, with pectin from the apple and a kiwi-and-fibre combination that may help with occasional constipation. Six plant foods in one glass.</p></div>
+  <div><div class="up">For health</div><p>Potassium, folate, vitamin K, magnesium and manganese. Blending keeps the whole fruit, so you keep the fibre that juice leaves behind.</p></div>
+</div>
+<div class="rc-what">{what.map((w)=>(<div class="rc-w"><div class="rc-wi"><IngredientIcon name={w.id} /></div><div><h3 class="hd">{w.name}</h3><div class="rc-tags">{w.tags.map(t=>(<span>{t}</span>))}</div>{w.text.map(p=>(<p set:html={p}></p>))}</div></div>))}</div>
+</section>
+
+<section class="p art-grid" style="padding-top:64px"><div class="art-body">
+<div class="callout"><div class="up">The honest part</div><p>No single smoothie changes your skin or your gut on its own. What helps is the pattern: more plants, enough fibre, regular meals, sleep, sunscreen and a gentle routine. This smoothie is one easy, tasty way to add plants to your day. It contains natural fruit sugar, so if you are watching your blood sugar, a spoon of protein or healthy fat can help slow things down. This is general information from my own reading, not medical advice. If you have digestive symptoms or a skin condition, please see a doctor.</p></div>
+
+<h2>Make it your own</h2>
+<ul class="chk">
+  <li><strong>More protein:</strong> add plain yogurt, kefir or a scoop of protein powder.</li>
+  <li><strong>More healthy fat and fibre:</strong> add a spoon of chia, ground flax or hemp seeds.</li>
+  <li><strong>Softer and sweeter:</strong> use a riper banana or swap some of the water for coconut water.</li>
+  <li><strong>Less sweet:</strong> use less pineapple and a little more lime and spinach.</li>
+</ul>
+<p>Want more ideas for plants, fibre and gut-friendly habits? Read my <a href="/notes/gut-health-checklist/">gut health checklist</a> and my <a href="/notes/best-foods-for-skin/">grocery list of the best foods for skin</a>.</p>
+
+<h2>Green smoothie: common questions</h2>
+{faq.map(([q,a])=>(<><h3>{q}</h3><p>{a}</p></>))}
+
+<AuthorBox />
+<NewsletterCta />
+
+<h2>Sources</h2>
+<ul class="src">
+<li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5579659/" rel="noopener" target="_blank">The Roles of Vitamin C in Skin Health</a>, Nutrients (2017), PMC.</li>
+<li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6267416/" rel="noopener" target="_blank">The nutritional and health attributes of kiwifruit: a review</a>, PMC.</li>
+<li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3529416/" rel="noopener" target="_blank">Properties and Therapeutic Application of Bromelain: A Review</a>, Biotechnology Research International (2012), PMC.</li>
+<li><a href="https://ods.od.nih.gov/factsheets/VitaminC-HealthProfessional/" rel="noopener" target="_blank">Vitamin C, health professional fact sheet</a>, NIH Office of Dietary Supplements.</li>
+<li><a href="https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/" rel="noopener" target="_blank">Iron, health professional fact sheet</a>, NIH Office of Dietary Supplements (vitamin C and non-heme iron absorption).</li>
+<li><a href="https://ods.od.nih.gov/factsheets/Potassium-HealthProfessional/" rel="noopener" target="_blank">Potassium, health professional fact sheet</a>, NIH Office of Dietary Supplements.</li>
+<li><a href="https://ods.od.nih.gov/factsheets/Manganese-HealthProfessional/" rel="noopener" target="_blank">Manganese, health professional fact sheet</a>, NIH Office of Dietary Supplements.</li>
+<li><a href="https://journals.asm.org/doi/10.1128/msystems.00031-18" rel="noopener" target="_blank">American Gut: an open platform for citizen science microbiome research</a>, mSystems (2018).</li>
+</ul>
+</div><aside class="art-side"><div class="glance"><div class="up" style="color:#8A8A8A;margin-bottom:6px">At a glance</div><div class="kv"><span>Type</span><span>Smoothie</span></div><div class="kv"><span>Ingredients</span><span>7, all whole fruit and greens</span></div><div class="kv"><span>Diet</span><span>Vegan, dairy-free</span></div><div class="kv"><span>Main players</span><span>Vitamin C and fibre</span></div><div class="kv"><span>Best fresh</span><span>Drink right after blending</span></div></div></aside></section>
+</article>
+</Base>
+<style is:global>
+.s .rc-spread{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:56px;align-items:center;margin-top:22px}
+.s .rc-photo{aspect-ratio:4/5;overflow:hidden;background:#EDEDED;width:min(100%,calc(80vh*.8));justify-self:center}
+.s .rc-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.s .rc-h1{font-size:clamp(48px,6vw,104px);line-height:.95;margin:10px 0 0;color:#9A9A9A}
+.s .rc-hand{font-size:36px;transform:rotate(-2deg);margin:6px 0 18px}
+.s .rc-lead{font-size:21px;line-height:1.55;color:#3A3A3A;max-width:620px;margin:0 0 20px}
+.s .rc-facts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.s .rc-facts span{background:#F2C6D3;color:#8F2E47;font:700 12px 'Inter Tight',sans-serif;text-transform:uppercase;letter-spacing:.06em;padding:7px 12px;border-radius:6px}
+.s .rc-jump{color:#B0475E;border-bottom:1px solid #E5C3CC;padding-bottom:2px}
+.s .rc-h2{font-size:clamp(30px,3.4vw,46px);margin:0 0 10px}
+.s .rc-sub{font-size:19px;color:#5C5C5C;max-width:720px;margin:0 0 28px;line-height:1.6}
+.s .rc-cols{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:56px;align-items:start}
+.s .rc-steps{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:20px}
+.s .rc-steps li{display:grid;grid-template-columns:44px 1fr;gap:18px;align-items:start}
+.s .rc-n{width:44px;height:44px;border-radius:50%;background:#B0475E;color:#fff;font:800 18px 'Inter Tight',sans-serif;display:flex;align-items:center;justify-content:center}
+.s .rc-steps b{font:700 17px 'Inter Tight',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:#4A4A4A}
+.s .rc-steps p{margin:4px 0 0;font-size:19px;line-height:1.6;color:#2F2F2F}
+.s .rc-note{background:#F7F7F7;padding:28px}
+.s .rc-note p{font-size:18px;line-height:1.6;margin:10px 0 12px;color:#3A3A3A}
+.s .rc-sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-bottom:40px}
+.s .rc-sum>div{background:#F7F7F7;padding:24px}
+.s .rc-sum .up{color:#B0475E;margin-bottom:8px}
+.s .rc-sum p{margin:0;font-size:17px;line-height:1.6;color:#3A3A3A}
+.s .rc-what{display:grid;gap:22px}
+.s .rc-w{display:grid;grid-template-columns:96px 1fr;gap:28px;background:#F7F7F7;padding:24px 28px;align-items:start}
+.s .rc-wi{width:64px;height:64px}
+.s .rc-w h3{font-size:26px;margin:0 0 8px;color:#6A6A6A}
+.s .rc-w p{margin:0 0 12px;font-size:18px;line-height:1.65;color:#2F2F2F;max-width:780px}
+.s .rc-tags{display:flex;gap:6px;margin-bottom:12px}
+.s .rc-tags span{background:#F2C6D3;color:#8F2E47;font:700 11px 'Inter Tight',sans-serif;text-transform:uppercase;letter-spacing:.06em;padding:4px 9px;border-radius:5px}
+@media (max-width:900px){.s .rc-spread,.s .rc-cols{grid-template-columns:1fr;gap:28px}.s .rc-sum{grid-template-columns:1fr}.s .rc-w{grid-template-columns:1fr}.s .rc-wi{width:56px;height:56px}.s .rc-h1{font-size:52px}}
+</style>

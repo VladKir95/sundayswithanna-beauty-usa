@@ -1,0 +1,27 @@
+---
+// Link block to the interactive Skin guide. Shown at the end of every article, under "Keep reading".
+---
+<section class="p sec sgc-wrap">
+  <a class="sgc" href="/skin-guide/">
+    <div class="sgc-l">
+      <div class="up sgc-k">Skin guide</div>
+      <div class="hd sgc-t">Not sure where to start?</div>
+      <div class="hand sgc-h">pick your skin concern</div>
+    </div>
+    <div class="sgc-r">
+      <p>Tell me what your skin feels like, and I will show you what to look for and what to skip.</p>
+      <span class="up arrow sgc-b">Open the skin guide</span>
+    </div>
+  </a>
+</section>
+<style>
+  .sgc-wrap{padding-top:8px}
+  .sgc{max-width:1100px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px;align-items:center;background:#F5F5F5;padding:44px;text-decoration:none;color:inherit;transition:background .2s}
+  .sgc:hover{background:#EDEDED}
+  .sgc-k{color:#8A8A8A}
+  .sgc-t{margin:10px 0 0;font-size:clamp(34px,4vw,56px);line-height:1;color:#6A6A6A}
+  .sgc-h{margin-top:14px;font-size:34px;color:#B0475E;transform:rotate(-2deg);transform-origin:left center;display:inline-block}
+  .sgc-r p{margin:0 0 20px;font-family:'Newsreader',serif;font-size:20px;line-height:1.5;color:#4A4A4A;max-width:420px}
+  .sgc-b{color:#111}
+  @media (max-width:900px){.sgc{grid-template-columns:1fr;padding:28px 22px;gap:22px}.sgc-h{font-size:30px}}
+</style>
