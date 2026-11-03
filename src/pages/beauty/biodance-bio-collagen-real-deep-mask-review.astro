@@ -1,4 +1,5 @@
 ---
+import KeepReading from '../../components/KeepReading.astro';
 import Base from '../../layouts/Base.astro';
 import SkinGuideCta from '../../components/SkinGuideCta.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
@@ -137,7 +138,7 @@ const faq = [
 </ul>
 <p style="color:#8A8A8A;font-size:14px">Prices and brand claims checked in October 2026 and can change. Opinions of other shoppers are summarized as seen in public search results. Mask colors come from retailer listings.</p>
 </div><aside class="art-side"><div class="glance"><div class="up" style="color:#8A8A8A;margin-bottom:6px">At a glance</div><div class="kv"><span>Product</span><span>Biodance Bio-Collagen Real Deep Mask (pink), plus blue and purple versions</span></div><div class="kv"><span>Hero ingredients</span><span>Collagen extract, galactomyces, hyaluronic acid, niacinamide</span></div><div class="kv"><span>Price</span><span>From $19.00 for 4 masks</span></div><div class="kv"><span>Best for</span><span>Dry, dull skin; a hydration treat</span></div><div class="kv"><span>Verdict</span><span>A hydrating ritual I would buy again; effects are temporary</span></div></div></aside></section>
-<section class="p sec"><h2 class="hd" style="margin:0 0 28px;font-size:44px">Keep reading</h2><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px"><a href="/beauty/beauty-of-joseon-relief-sun-review/"><div class="ph" style="height:300px"><span>Photo coming soon</span></div><div class="up" style="margin-top:12px">Beauty of Joseon Relief Sun review</div></a><a href="/beauty/morning-skincare-routine-dry-skin-winter/"><div class="img" style="height:300px"><img src="/img/morn-eyepatch-mirror.webp" alt="" style="object-position:50% 40%"></div><div class="up" style="margin-top:12px">My morning skincare routine for dry skin in winter</div></a><a href="/beauty/axis-y-dark-spot-correcting-glow-serum-review/"><div class="ph" style="height:300px"><span>Photo coming soon</span></div><div class="up" style="margin-top:12px">Axis-Y Dark Spot Correcting Glow Serum</div></a></div></section>
+<KeepReading items={['/beauty/beauty-of-joseon-relief-sun-review/', '/beauty/morning-skincare-routine-dry-skin-winter/', '/beauty/axis-y-dark-spot-correcting-glow-serum-review/']} />
 <SkinGuideCta />
 </article>
 </Base>

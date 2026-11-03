@@ -1,4 +1,5 @@
 ---
+import KeepReading from '../../components/KeepReading.astro';
 import Base from '../../layouts/Base.astro';
 import SkinGuideCta from '../../components/SkinGuideCta.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
@@ -151,7 +152,7 @@ const faq = [
 <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12494302/" rel="noopener" target="_blank">The gut-skin axis: emerging insights in understanding and treating skin diseases through gut microbiome modulation</a>, review, PMC.</li>
 </ul>
 </div><aside class="art-side"><div class="glance"><div class="up" style="color:#8A8A8A;margin-bottom:6px">At a glance</div><div class="kv"><span>Topic</span><span>Daily gut habits</span></div><div class="kv"><span>Series</span><span>Part 4 of 5</span></div><div class="kv"><span>Best for</span><span>Anyone who wants a simple routine</span></div><div class="kv"><span>Rule</span><span>Boring habits, repeated</span></div></div></aside></section>
-<section class="p sec"><h2 class="hd" style="margin:0 0 28px;font-size:44px">Keep reading</h2><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px"><a href="/notes/gut-health-and-skin-barrier/"><div class="ph" style="height:300px"><span>Image</span></div><div class="up" style="margin-top:12px">Gut health and skin, part 1</div></a><a href="/notes/foods-that-cause-breakouts/"><div class="ph" style="height:300px"><span>Image</span></div><div class="up" style="margin-top:12px">Hidden skin triggers, part 3</div></a><a href="/notes/best-foods-for-skin/"><div class="ph" style="height:300px"><span>Image</span></div><div class="up" style="margin-top:12px">Best foods for skin, part 5</div></a></div></section>
+<KeepReading items={['/notes/gut-health-and-skin-barrier/', '/notes/foods-that-cause-breakouts/', '/notes/best-foods-for-skin/']} />
 <SkinGuideCta />
 </article>
 </Base>

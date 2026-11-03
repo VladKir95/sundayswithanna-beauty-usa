@@ -1,4 +1,5 @@
 ---
+import KeepReading from '../../components/KeepReading.astro';
 import Base from '../../layouts/Base.astro';
 import SkinGuideCta from '../../components/SkinGuideCta.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
@@ -150,7 +151,7 @@ const faq = [
 </ul>
 <p style="color:#8A8A8A;font-size:14px">Prices and formulas checked on Round Lab’s US store in October 2026 and can change.</p>
 </div><aside class="art-side"><div class="glance"><div class="up" style="color:#8A8A8A;margin-bottom:6px">At a glance</div><div class="kv"><span>Product</span><span>Round Lab Birch Juice sunscreens (4 versions)</span></div><div class="kv"><span>US price</span><span>$24.99 to $25 on Round Lab’s store</span></div><div class="kv"><span>My skin</span><span>Normal</span></div><div class="kv"><span>My favourite</span><span>Sun serum</span></div><div class="kv"><span>Verdict</span><span>I’ll buy it again</span></div></div></aside></section>
-<section class="p sec"><h2 class="hd" style="margin:0 0 28px;font-size:44px">Keep reading</h2><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px"><a href="/beauty/morning-skincare-routine-dry-skin-winter/"><div class="img" style="height:300px"><img src="/img/morn-eyepatch-mirror.webp" alt="" style="object-position:50% 40%"></div><div class="up" style="margin-top:12px">My morning skincare routine for dry skin in winter</div></a><a href="/beauty/medicube-zero-pore-pad-review/"><div class="img" style="height:300px"><img src="/img/med-hands.webp" alt="" style="object-position:50% 40%"></div><div class="up" style="margin-top:12px">Medicube Zero Pore Pad 2.0, three years in</div></a></div></section>
+<KeepReading items={['/beauty/morning-skincare-routine-dry-skin-winter/', '/beauty/medicube-zero-pore-pad-review/']} />
 <SkinGuideCta />
 </article>
 </Base>

@@ -1,4 +1,5 @@
 ---
+import KeepReading from '../../components/KeepReading.astro';
 import ProductInside from '../../components/ProductInside.astro';
 import ProductFacts from '../../components/ProductFacts.astro';
 import Base from '../../layouts/Base.astro';
@@ -57,7 +58,7 @@ import BuyCard from '../../components/BuyCard.astro';
 <h3>Did it make me purge?</h3><p>No, I had no breakouts when I started.</p>
 <h3>How often should I use it?</h3><p>I’d use them for 2 to 3 weeks regularly, then 2 to 3 times a week, or once a week as a spot mask.</p>
 </div><aside class="art-side"><div class="glance"><div class="up" style="color:#8A8A8A;margin-bottom:6px">At a glance</div><div class="kv"><span>Product</span><span>Zero Pore Pad 2.0, 70 pads</span></div><div class="kv"><span>Price</span><span>About $20 on YesStyle</span></div><div class="kv"><span>My skin</span><span>Normal, sometimes sensitive</span></div><div class="kv"><span>Used for</span><span>About three years</span></div><div class="kv"><span>Verdict</span><span>I’d buy it again, 100%</span></div></div></aside></section>
-<section class="p sec"><h2 class="hd" style="margin:0 0 28px;font-size:44px">Keep reading</h2><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px"><a href="/beauty/morning-skincare-routine-dry-skin-winter/"><div class="img" style="height:300px"><img src="/img/morn-eyepatch-mirror.webp" alt="" style="object-position:50% 40%"></div><div class="up" style="margin-top:12px">My morning skincare routine for dry skin in winter</div></a><a href="/beauty/round-lab-birch-juice-sunscreen-review/"><div class="ph" style="height:300px"><span>Photo coming soon</span></div><div class="up" style="margin-top:12px">Round Lab Birch Juice sunscreen: all four versions compared</div></a></div></section>
+<KeepReading items={['/beauty/morning-skincare-routine-dry-skin-winter/', '/beauty/round-lab-birch-juice-sunscreen-review/']} />
 <SkinGuideCta />
 </article>
 </Base>

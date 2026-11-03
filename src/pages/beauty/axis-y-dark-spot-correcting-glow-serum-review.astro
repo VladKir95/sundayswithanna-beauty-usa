@@ -1,4 +1,5 @@
 ---
+import KeepReading from '../../components/KeepReading.astro';
 import Base from '../../layouts/Base.astro';
 import SkinGuideCta from '../../components/SkinGuideCta.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
@@ -126,7 +127,7 @@ const faq = [
 </ul>
 <p style="color:#8A8A8A;font-size:14px">Prices and brand claims checked in October 2026 and can change. Social media opinions are summarized as I saw them in public search results.</p>
 </div><aside class="art-side"><div class="glance"><div class="up" style="color:#8A8A8A;margin-bottom:6px">At a glance</div><div class="kv"><span>Product</span><span>Axis-Y Dark Spot Correcting Glow Serum, 50 ml</span></div><div class="kv"><span>Hero ingredient</span><span>5% niacinamide</span></div><div class="kv"><span>Price</span><span>$14.50 to $24 on the brand’s US store</span></div><div class="kv"><span>Best for</span><span>Uneven tone and mild post-acne marks</span></div><div class="kv"><span>Verdict</span><span>A gentle glow serum I would buy again; give it 3 weeks</span></div></div></aside></section>
-<section class="p sec"><h2 class="hd" style="margin:0 0 28px;font-size:44px">Keep reading</h2><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px"><a href="/beauty/round-lab-birch-juice-sunscreen-review/"><div class="ph" style="height:300px"><span>Photo coming soon</span></div><div class="up" style="margin-top:12px">Round Lab Birch Juice sunscreen: all four versions compared</div></a><a href="/beauty/morning-skincare-routine-dry-skin-winter/"><div class="img" style="height:300px"><img src="/img/morn-eyepatch-mirror.webp" alt="" style="object-position:50% 40%"></div><div class="up" style="margin-top:12px">My morning skincare routine for dry skin in winter</div></a><a href="/beauty/medicube-zero-pore-pad-review/"><div class="img" style="height:300px"><img src="/img/med-hands.webp" alt="" style="object-position:50% 40%"></div><div class="up" style="margin-top:12px">Medicube Zero Pore Pad 2.0, three years in</div></a></div></section>
+<KeepReading items={['/beauty/round-lab-birch-juice-sunscreen-review/', '/beauty/morning-skincare-routine-dry-skin-winter/', '/beauty/medicube-zero-pore-pad-review/']} />
 <SkinGuideCta />
 </article>
 </Base>

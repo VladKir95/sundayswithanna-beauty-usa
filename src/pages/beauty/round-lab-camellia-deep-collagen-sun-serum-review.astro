@@ -1,4 +1,5 @@
 ---
+import KeepReading from '../../components/KeepReading.astro';
 import Base from '../../layouts/Base.astro';
 import SkinGuideCta from '../../components/SkinGuideCta.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
@@ -108,7 +109,7 @@ const faq = [
 </ul>
 <p style="color:#8A8A8A;font-size:14px">Prices, availability and formulas checked in October 2026 and can change. Always read the ingredient list on your own packaging.</p>
 </div><aside class="art-side"><div class="glance"><div class="up" style="color:#8A8A8A;margin-bottom:6px">At a glance</div><div class="kv"><span>Product</span><span>Round Lab Camellia Deep Collagen Firming Sun Serum</span></div><div class="kv"><span>Protection</span><span>SPF 50+, PA++++</span></div><div class="kv"><span>Size</span><span>50 ml</span></div><div class="kv"><span>Texture</span><span>Light, milk-like, no scent</span></div><div class="kv"><span>Verdict</span><span>A favourite since April 2025; I always rebuy</span></div></div></aside></section>
-<section class="p sec"><h2 class="hd" style="margin:0 0 28px;font-size:44px">Keep reading</h2><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px"><a href="/beauty/round-lab-birch-juice-sunscreen-review/"><div class="ph" style="height:300px"><span>Photo coming soon</span></div><div class="up" style="margin-top:12px">Round Lab Birch Juice sunscreen: all four versions compared</div></a><a href="/beauty/axis-y-dark-spot-correcting-glow-serum-review/"><div class="ph" style="height:300px"><span>Photo coming soon</span></div><div class="up" style="margin-top:12px">Axis-Y Dark Spot Correcting Glow Serum review</div></a><a href="/beauty/morning-skincare-routine-dry-skin-winter/"><div class="img" style="height:300px"><img src="/img/morn-eyepatch-mirror.webp" alt="" style="object-position:50% 40%"></div><div class="up" style="margin-top:12px">My morning skincare routine for dry skin in winter</div></a></div></section>
+<KeepReading items={['/beauty/round-lab-birch-juice-sunscreen-review/', '/beauty/axis-y-dark-spot-correcting-glow-serum-review/', '/beauty/morning-skincare-routine-dry-skin-winter/']} />
 <SkinGuideCta />
 </article>
 </Base>
