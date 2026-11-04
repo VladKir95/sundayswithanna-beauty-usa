@@ -1,0 +1,16 @@
+---
+---
+<button type="button" class="totop" aria-label="Back to top" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+<script is:inline>
+(function(){var b=document.querySelector('.totop');if(!b)return;
+function t(){var show=window.scrollY>400;if(show&&b.hidden){b.hidden=false;requestAnimationFrame(function(){b.classList.add('on')})}else if(!show&&!b.hidden){b.classList.remove('on');b.hidden=true}}
+window.addEventListener('scroll',t,{passive:true});t();
+b.addEventListener('click',function(){window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})});
+})();
+</script>
+<style is:global>
+.s .totop{position:fixed;right:20px;bottom:20px;z-index:55;width:46px;height:46px;border-radius:50%;border:1px solid #B0475E;background:#fff;color:#B0475E;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.12);opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s,background .3s,color .3s}
+.s .totop.on{opacity:1;transform:none}
+.s .totop:hover{background:#B0475E;color:#fff}
+@media (max-width:760px){.s .totop{right:14px;bottom:14px;width:42px;height:42px}}
+</style>

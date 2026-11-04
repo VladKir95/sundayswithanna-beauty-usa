@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import UvFab from '../components/UvFab.astro';
+import ToTop from '../components/ToTop.astro';
 const { title = 'Sundays with Anna', description = 'Honest beauty and skincare reviews from my own skin, every Sunday.' } = Astro.props;
 ---
 <!doctype html>
@@ -25,6 +26,7 @@ const { title = 'Sundays with Anna', description = 'Honest beauty and skincare r
 <div><h4>Official</h4><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/affiliate-disclosure/">Affiliate disclosure</a><a href="/contact/">Contact</a></div>
 <div style="text-align:right"><h4>Follow</h4><a href="https://www.instagram.com/sundayswithanna/" rel="noopener" target="_blank">Instagram</a></div></footer>
 <UvFab />
+<ToTop />
 </div>
 </body>
 </html>

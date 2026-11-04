@@ -12,6 +12,6 @@ export const articles = {
   '/notes/gut-health-and-skin-barrier/': { kind: 'Note', pill: 'Gut health', title: 'Gut health and skin, part 1', intro: 'How gut health can show up on your skin, what the research really says and what I would do first.', chips: N },
   '/notes/foods-and-supplements-for-skin/': { kind: 'Note', pill: 'Food and skin', title: 'Foods for glowing skin, part 2', intro: 'The foods I come back to, how I think about magnesium, omega-3s, zinc and probiotics, and real daily limits.', chips: N },
   '/notes/foods-that-cause-breakouts/': { kind: 'Note', pill: 'Breakouts', title: 'Hidden skin triggers, part 3', intro: 'What the research shows about sugar, dairy, alcohol, stress and sleep, and how I find my own triggers.', chips: N },
-  '/notes/gut-health-checklist/': { kind: 'Note', pill: 'Gut health', title: 'Gut health checklist, part 4', intro: 'Small daily habits for better digestion and glowing skin: protein, plants, a walk after meals, sleep and calm.', chips: N },
+  '/notes/gut-health-checklist/': { kind: 'Note', pill: 'Gut health', img: '/img/curlers-selfie-hero.webp', pos: '42% 40%', title: 'Gut health checklist, part 4', intro: 'Small daily habits for better digestion and glowing skin: protein, plants, a walk after meals, sleep and calm.', chips: N },
   '/notes/best-foods-for-skin/': { kind: 'Note', pill: 'Food and skin', title: 'Best foods for skin, part 5', intro: 'My grocery list for glowing skin and a healthy gut, with real numbers and honest limits.', chips: N },
 };

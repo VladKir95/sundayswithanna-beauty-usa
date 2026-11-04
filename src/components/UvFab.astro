@@ -3,7 +3,7 @@ import UvWidget from './UvWidget.astro';
 ---
 <button type="button" class="uvfab" id="uvfab" draggable="false" aria-label="Open the UV check" aria-expanded="false" aria-controls="uvfab-panel">
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
-  <span class="uvfab-t" id="uvfab-t">UV</span>
+  <span class="uvfab-c"><span class="uvfab-k">UV index</span><span class="uvfab-t" id="uvfab-t">Check</span></span>
 </button>
 <div class="uvfab-panel" id="uvfab-panel" role="dialog" aria-label="UV check" hidden>
   <button type="button" class="uvfab-x" id="uvfab-x" aria-label="Close">×</button>
@@ -14,14 +14,14 @@ import UvWidget from './UvWidget.astro';
 (function(){
   var fab=document.getElementById('uvfab'), panel=document.getElementById('uvfab-panel'), t=document.getElementById('uvfab-t'), x=document.getElementById('uvfab-x');
   if(!fab||!panel)return;
-  var KEY='uvfab-pos', SIZE=52, M=14;
-  var pos={side:'right',y:null};
+  var KEY='uvfab-pos2', SIZE=52, M=14;
+  var pos={side:'left',y:null};
   try{var sp=JSON.parse(localStorage.getItem(KEY)||'null');if(sp&&(sp.side==='left'||sp.side==='right')&&typeof sp.y==='number')pos=sp}catch(e){}
   function clampY(y){return Math.max(M,Math.min(window.innerHeight-SIZE-M,y))}
   function place(animate){
     var y=pos.y==null?window.innerHeight-SIZE-96:pos.y; y=clampY(y);
     fab.style.transition=animate?'left .28s cubic-bezier(.2,.9,.3,1.2),top .28s ease':'none';
-    fab.style.left=(pos.side==='left'?M:window.innerWidth-SIZE-M)+'px';
+    fab.style.left=(pos.side==='left'?M:window.innerWidth-fab.offsetWidth-M)+'px';
     fab.style.top=y+'px';
     if(open)placePanel();
   }
@@ -51,7 +51,7 @@ import UvWidget from './UvWidget.astro';
     if(!drag)return;var dx=e.clientX-sx,dy=e.clientY-sy;
     if(!moved&&Math.abs(dx)+Math.abs(dy)<6)return;
     moved=true;fab.classList.add('drag');
-    fab.style.left=Math.max(0,Math.min(window.innerWidth-SIZE,ox+dx))+'px';
+    fab.style.left=Math.max(0,Math.min(window.innerWidth-fab.offsetWidth,ox+dx))+'px';
     fab.style.top=Math.max(0,Math.min(window.innerHeight-SIZE,oy+dy))+'px';
     if(open)placePanel();
   });
@@ -60,7 +60,7 @@ import UvWidget from './UvWidget.astro';
     if(pid!=null){try{fab.releasePointerCapture(pid)}catch(e){}}
     if(moved){
       var r=fab.getBoundingClientRect();
-      pos={side:(r.left+SIZE/2<window.innerWidth/2)?'left':'right',y:clampY(r.top)};
+      pos={side:(r.left+r.width/2<window.innerWidth/2)?'left':'right',y:clampY(r.top)};
       try{localStorage.setItem(KEY,JSON.stringify(pos))}catch(e){}
       place(true);
       setTimeout(function(){if(open)placePanel()},300);
@@ -74,7 +74,7 @@ import UvWidget from './UvWidget.astro';
   document.addEventListener('pointerdown',function(e){if(open&&!panel.contains(e.target)&&!fab.contains(e.target))setOpen(false)});
   window.addEventListener('resize',function(){place(false)});
   window.addEventListener('uvw:update',function(e){
-    var d=e.detail;t.textContent=d.sunUp||d.now>=0.5?d.now.toFixed(0):'UV';
+    var d=e.detail;t.textContent=d.sunUp||d.now>=0.5?d.now.toFixed(0):'Check';
     fab.style.background=d.color;fab.style.color=d.text;fab.title='UV '+d.now.toFixed(1)+' ('+d.name+')';
   });
   place(false);
@@ -82,11 +82,13 @@ import UvWidget from './UvWidget.astro';
 </script>
 
 <style is:global>
-.s .uvfab{position:fixed;z-index:60;width:52px;height:52px;border-radius:50%;border:0;background:#111;color:#fff;cursor:grab;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;box-shadow:0 6px 20px rgba(0,0,0,.22);touch-action:none;user-select:none;-webkit-user-select:none;padding:0;font-family:'Inter Tight',sans-serif}
+.s .uvfab{position:fixed;z-index:60;height:52px;border-radius:16px;border:0;background:#111;color:#fff;cursor:grab;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:9px;padding:0 16px 0 14px !important;box-shadow:0 6px 20px rgba(0,0,0,.22);touch-action:none;user-select:none;-webkit-user-select:none;padding:0;font-family:'Inter Tight',sans-serif}
 .s .uvfab:hover{transform:scale(1.06)}
 .s .uvfab.drag{cursor:grabbing;transform:scale(1.12);box-shadow:0 12px 30px rgba(0,0,0,.3)}
 .s .uvfab svg{display:block}
-.s .uvfab-t{font-size:11px;font-weight:700;line-height:1;margin-top:1px;letter-spacing:.02em}
+.s .uvfab-c{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left}
+.s .uvfab-k{font-size:9px;font-weight:600;line-height:1;letter-spacing:.1em;text-transform:uppercase;opacity:.72}
+.s .uvfab-t{font-size:15px;font-weight:700;line-height:1;letter-spacing:.01em}
 .s .uvfab-panel{position:fixed;z-index:61;max-height:calc(100vh - 24px);overflow-y:auto;border-radius:16px;box-shadow:0 18px 50px rgba(0,0,0,.25);background:#F5F5F5}
 .s .uvfab-panel[hidden]{display:none}
 .s .uvfab-x{position:absolute;top:8px;right:10px;z-index:2;width:30px;height:30px;border-radius:50%;border:0;background:#fff;color:#111;font-size:20px;line-height:1;cursor:pointer}
