@@ -8,9 +8,9 @@ export const ys = (q) => 'https://www.yesstyle.com/en/list.html?q=' + encodeURIC
 export const oy = (q) => 'https://global.oliveyoung.com/global/search/results?query=' + encodeURIComponent(q);
 export const am = (q) => 'https://www.amazon.com/s?k=' + encodeURIComponent(q);
 export const dp = (a) => 'https://www.amazon.com/dp/' + a;
-const BRANDS = ['Beauty of Joseon','haruharu wonder','Dear, Klairs','House of Hur','Sungboon Editor','Round Lab','Dr. Jart+','Dr.Jart+','Axis-Y','Medicube','SKIN1004','TIRTIR','Whipped','glow','Huxley','innisfree','iUNIK','LANEIGE','ma:nyo','MEDIHEAL','mixsoon','numbuzin','SKINFOOD','VT','Biodance','Gisou','Anillo','Knock','Narka','Rituals','kaine','skit','Tamburins','currentbody','Shark','insta360'];
+const BRANDS = ['Beauty of Joseon','haruharu wonder','Dear, Klairs','House of Hur','Sungboon Editor','Round Lab','Dr. Jart+','Dr.Jart+','Axis-Y','Medicube','SKIN1004','TIRTIR','Whipped','glow','Huxley','innisfree','iUNIK','LANEIGE','ma:nyo','MEDIHEAL','mixsoon','numbuzin','SKINFOOD','VT','Biodance','Gisou','Anillo','Knock','Narka','Rituals','kaine','skit','Tamburins','currentbody','Shark','insta360','hince','muzigae mansion','MILKTOUCH','parnell','fwee','unleashia','NEOGEN','MISSHA','rhode','CLIO','dasique','Artclass by Rodin','about tone'];
 export const brandOf = (name) => { const n = name.toLowerCase(); const b = BRANDS.find((x) => n.startsWith(x.toLowerCase() + ' ')); return b ? (b === 'Dr.Jart+' ? 'Dr. Jart+' : b) : ''; };
-const SEPHORA = ['LANEIGE','Dr. Jart+','innisfree','Beauty of Joseon']; // 'glow' removed: Sephora does not carry it (checked Nov 2026)
+const SEPHORA = ['LANEIGE','Dr. Jart+','innisfree','Beauty of Joseon','rhode']; // 'glow' removed: Sephora does not carry it (checked Nov 2026)
 export const item = (x) => {
   const b = brandOf(x.name || '');
   const rows = x.y ? [{ shop:'YesStyle', p:x.y.p, u: x.y.u || ys(x.y.q || x.q) }] : [];
@@ -429,10 +429,73 @@ const hairBody = [
 ]},
 ];
 
+
+// ---- makeup (YesStyle / Ulta / Amazon search links; prices to be filled when the exact listing is confirmed)
+const mk = (name, sub, q, a = {}, y = {}) => item({ name, sub, q, y:{ p:null, ...y }, o:{ p:null }, a:{ p:null, ...a } });
+const makeup = [
+{ title:'Base and concealers', tag:'Base', note:'cushions, BB cream, concealers and primers', items:[
+ mk('hince Cover Master Pink Cushion', '21 Pure Ivory, Odd Spring edition', 'hince cover master pink cushion 21 pure ivory', { p:25, u:dp('B0FW4K17W4'), note:'price may vary by shade' }, { p:21.25 }),
+ mk('TIRTIR Mask Fit Red Cushion', '17W French Vanilla', 'tirtir mask fit red cushion 17w french vanilla', {}, { p:15 }),
+ mk('fwee Cushion Glass', '02 Natural, Nude Glass', 'fwee cushion glass natural 02 nude glass', {}, { p:18.2 }),
+ mk('LANEIGE Neo Cushion Matte', '', 'laneige neo cushion matte', {}, { p:30 }),
+ mk('parnell Glacial Biome Water No-Sebum Cushion', '', 'parnell glacial biome water no-sebum cushion', {}, { p:11.02 }),
+ mk('MISSHA Perfect Cover BB Cream EX', 'No. 21', 'missha perfect cover bb cream ex no.21', { p:14.90, u:dp('B002B9DWBC') }, { p:14.9, u:'https://www.yesstyle.com/en/missha-m-perfect-cover-bb-cream-spf42-pa-7-colors/info.html/pid.1048964957' }),
+ mk('glow Not Dry Concealer Pale and Blush Beige', 'Dual-ended', 'glow not dry concealer dual-ended pale blush beige', {}, { p:34.8 }),
+ mk('glow Not Dry Concealer Pink and White', 'Dual-ended', 'glow not dry concealer dual-ended pink white', {}, { p:34.8 }),
+ mk('unleashia Bye Bye My Blemish Concealer', '1.0', 'unleashia bye bye my blemish concealer 1.0'),
+ mk('TIRTIR Reflect Glow Prep Primer', '', 'tirtir reflect glow prep primer', {}, { p:16.5, u:'https://www.yesstyle.com/en/tirtir-prep-primer-2-types-reflect-glow/info.html/pid.1137677017' }),
+ mk('hince Pore-Shot Blur Primer', '', 'hince pore-shot blur primer'),
+]},
+{ title:'Powders and setting', tag:'Set', note:'blur, fix and keep it in place', items:[
+ mk('MILKTOUCH Air Blur Rice Setting Powder', 'Translucent', 'milktouch air blur rice setting powder translucent', { p:26, u:dp('B0FJRRM9DP') }),
+ mk('hince Radiance UV Loose Powder', 'Translucent', 'hince radiance uv loose powder translucent'),
+ mk('innisfree No-Sebum Mineral Powder', '', 'innisfree no-sebum mineral powder', { p:14, u:dp('B0CWN955CQ') }, { p:5 }),
+ mk('about tone Blur Powder Pact', '01 Fair, Silver edition', 'about tone silver edition blur powder pact 01 fair', {}, { p:7.84 }),
+ mk('fwee Shaking Synergy Mist Powder', 'Fixing, blur, lasting', 'fwee shaking synergy mist powder', {}, { p:19.38 }),
+]},
+{ title:'Cheeks and glow', tag:'Glow', note:'blush, bronzer and a little shimmer', items:[
+ mk('glow Cocktail Blush', 'Purple Flame', 'glow cocktail blush purple flame', {}, { p:32 }),
+ mk('hince Raw Glow Dewy Ball', '15 Peach Dew', 'hince raw glow dewy ball 15 peach dew', {}, { p:16.14 }),
+ mk('Artclass by Rodin Poudre Bronzante Moderne', 'Boutique edition', 'artclass by rodin poudre bronzante moderne'),
+ mk('hince Face and Body Glitter Balm', '', 'hince face and body glitter balm'),
+]},
+{ title:'Lips', tag:'Lips', note:'tints, glosses, oils and tinted balms', items:[
+ mk('glow Diamond Tinted Lip Oil 0921', 'Tinted lip oil', 'glow diamond tinted lip oil 0921', {}, { p:57.6, u:'https://www.yesstyle.com/en/glow-diamond-tinted-lip-oil-5-colors-0326/info.html/pid.1137986339' }),
+ mk('glow Diamond Tinted Lip Oil 0920', 'Tinted lip oil', 'glow diamond tinted lip oil 0920', {}, { p:57.6, u:'https://www.yesstyle.com/en/glow-diamond-tinted-lip-oil-5-colors-0326/info.html/pid.1137986339' }),
+ mk('hince Raw Glow Gel Tint Odd Rose', 'Odd Spring edition', 'hince raw glow gel tint odd rose', {}, { p:17.34 }),
+ mk('TIRTIR Waterism Glow Tint', '19 Bad Rosy', 'tirtir waterism glow tint 19 bad rosy', {}, { p:13.5, u:'https://www.yesstyle.com/en/tirtir-waterism-glow-tint-10-colors-09-salmon-syrup/info.html/pid.1129748633' }),
+ mk('muzigae mansion Icy Glow Tint', '03', 'muzigae mansion icy glow tint 03'),
+ mk('NEOGEN Metal Glow Lip Tint Serum', 'All shades', 'neogen metal glow lip tint serum', { p:32.3, note:'price may vary by shade' }),
+ mk('hince Mute Switch Gloss', '', 'hince mute switch gloss'),
+ (() => { const r = mk('rhode Peptide Lip Tint', 'Salty Tan', 'rhode peptide lip tint salty tan'); r.rows.unshift({ shop:'rhode', p:20, u:'https://www.rhodeskin.com/products/peptide-lip-tint' }); return r; })(),
+ mk('Axis-Y Vita Glow Lip Oil', 'Dreamy Olive', 'axis-y vita glow lip oil dreamy olive', {}, { p:10.5 }),
+ mk('fwee Tinted Lip Balm Banana Strawberry', 'Tinted lip balm', 'fwee tinted lip balm banana strawberry', {}, { p:12.8 }),
+ mk('fwee Tinted Lip Balm Acai Vanilla', 'Tinted lip balm', 'fwee tinted lip balm acai vanilla', {}, { p:12.8 }),
+ mk('haruharu wonder Rose PDRN Peptide Glowy Balm Ruby Red', 'Tinted lip balm', 'haruharu wonder rose pdrn peptide glowy balm ruby red', { p:14, u:dp('B0HCMS4752') }, { p:11.2 }),
+ mk('haruharu wonder Rose PDRN Peptide Glowy Balm Petal Pink', 'Tinted lip balm', 'haruharu wonder rose pdrn peptide glowy balm petal pink', { p:14, u:dp('B0HCMS253N') }, { p:11.2 }),
+ mk('Anillo Glow Balm Velvet Wine', 'Tinted lip balm', 'anillo glow balm velvet wine', { p:16, u:dp('B0G9T2147W') }, { p:14.4 }),
+ mk('Anillo Glow Balm Fig Haze', 'Tinted lip balm', 'anillo glow balm fig haze', { p:16, u:dp('B0G9T1N35D') }, { p:14.4 }),
+ mk('Anillo Glow Balm Nude Blur', 'Tinted lip balm', 'anillo glow balm nude blur', { p:16, u:dp('B0G9V9HDHX') }, { p:14.4 }),
+]},
+{ title:'Eyes and brows', tag:'Eyes', note:'palettes, color pots and brow tools', items:[
+ mk('CLIO Pro Eye Palette Air 12', 'Crystalpaw', 'clio pro eye palette air 12 crystalpaw', { p:27.99, u:dp('B0GVXZZ91L') }, { p:23.67 }),
+ mk('glow Lonely Legend Eyeshadow', 'Vicious', 'glow lonely legend eyeshadow vicious', {}, { p:33.0 }),
+ mk('dasique Souffle Color Pot', 'I own all the shades', 'dasique souffle color pot', {}, { p:15.3 }),
+ mk('unleashia Shaper Defining Eyebrow Pencil', '2 Kraft Brown', 'unleashia shaper defining eyebrow pencil 2 kraft brown', {}, { p:13.0, u:'https://www.yesstyle.com/en/unleashia-shaper-defining-eyebrow-pencil-3-colors-n-3-taupe-gray/info.html/pid.1115860716' }),
+ mk('unleashia Shaper Pomade Eyebrow Fixer', 'Clear', 'unleashia shaper pomade eyebrow fixer clear', {}, { p:11.17 }),
+]},
+{ title:'Brushes and tools', tag:'Tools', note:'what I apply it all with', items:[
+ mk('glow Face Brush C1', '', 'glow face brush c1'),
+ mk('glow Face Brush H1', '', 'glow face brush h1'),
+ mk('glow Mini Cloud Sponge', '', 'glow mini cloud sponge', {}, { p:14 }),
+ mk('fwee Fingerlike Silicone Lip Brush', '', 'fwee fingerlike silicone lip brush', {}, { p:7.2 }),
+]},
+];
+
 export const categories = [
   { id:'skincare', title:'Skincare', groups: skincare },
   { id:'hair-body', title:'Hair & body care', groups: hairBody },
-  { id:'makeup', title:'Makeup', groups:[ { title:'Makeup', tag:'Soon', note:'my favourites are coming soon', items:[] } ] },
+  { id:'makeup', title:'Makeup', groups: makeup },
   { id:'fashion', title:'Clothes and fashion', groups:[ { title:'Clothes and fashion', tag:'Soon', note:'my favourites are coming soon', items:[] } ] },
   { id:'home', title:'Home goods', groups:[ { title:'Home goods', tag:'Soon', note:'my favourites are coming soon', items:[] } ] },
   { id:'tech', title:'Tech things', groups:[
